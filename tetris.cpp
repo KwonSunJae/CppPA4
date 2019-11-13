@@ -5,6 +5,7 @@
 #include <string.h>
 #include <Windows.h> // FIXED_1 헤더파일
 #include <time.h> // FIXED_1 헤더 파일 추가
+#include <stdlib.h>
 //*********************************
 //상수 선언
 //*********************************
@@ -118,16 +119,16 @@ int main(int argc, char* argv[])
 		for (i = 1; 1; i++)
 
 		{
-			if (kbhit())
+			if (_kbhit())
 			{
-				keytemp = getche();
+				keytemp = _getche();
 				if (keytemp == 27) {
 					erase_cur_block(block_shape, block_angle, block_x, block_y);
 					show_cur_block(block_shape, block_angle, block_x, block_y);
 				} // FIXED ESC 누르면 잔상 남는거 처리함.
 				if (keytemp == EXT_KEY)
 				{
-					keytemp = getche();
+					keytemp = _getche();
 					switch (keytemp)
 					{
 					case KEY_UP: //회전하기
@@ -430,7 +431,7 @@ int strike_check(int shape, int angle, int x, int y)
 			else
 				block_dat = total_block[y + i][x + j];
 
-			if ((block_dat == 1) && (block[shape][angle][i][j] == 1)) //좌측벽의 좌표를 빼기위함
+			if ((block_dat == 1) && (block[shape][angle][i][j] == 1 || y < 0)) //좌측벽의 좌표를 빼기위함, FIXED_6 왼쪽에 일자블록 나오자마자 집어넣으면 Game over 뜨는 오류 수정
 			{
 				return 1;
 			}
@@ -480,7 +481,7 @@ int show_gameover()
 	fflush(stdin);
 	Sleep(1000);
 
-	getche();
+	_getche();
 	system("cls");
 
 	return 0;
@@ -628,11 +629,11 @@ int input_data()
 		gotoxy(10, 13);
 		printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 
-	
+
 		rewind(stdin);
 		gotoxy(10, 3);
 		printf("Select Start level[1-10]: ");
-		scanf("%d", &i);
+		scanf_s("%d", &i);
 	}
 
 	// FIXED_2 원래 i 값 int 로 받던거 char 로 해서 예외 안나오게 처리함.
@@ -687,12 +688,12 @@ int show_logo()
 			show_cur_block(rand() % 7, rand() % 4, 19, 14);
 			show_cur_block(rand() % 7, rand() % 4, 24, 14);
 		}
-		if (kbhit())
+		if (_kbhit())
 			break;
 		Sleep(30);
 	}
 
-	getche();
+	_getche();
 	system("cls");
 
 	return 0;
