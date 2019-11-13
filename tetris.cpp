@@ -81,7 +81,7 @@ char block[7][4][4][4] = {
 //*********************************
 //함수 선언
 //*********************************
-int gotoxy(int x, int y); //커서옮기기
+void gotoxy(int x, int y); //커서옮기기
 void SetColor(int color); //색표현
 int init(); //각종변수 초기화
 int show_cur_block(int shape, int angle, int x, int y); //진행중인 블럭을 화면에 표시한다
@@ -89,7 +89,7 @@ int erase_cur_block(int shape, int angle, int x, int y); //블럭 진행의 잔�
 int show_total_block(); //쌓여져있는 블럭을 화면에 표시한다.
 int show_next_block(int shape);
 int make_new_block(); //return값으로 block의 모양번호를 알려줌
-int strike_check(int shape, int angle, int x, int y); //블럭이 화면 맨 아래에 부닥쳤는지 검사 부닥치면 1을리턴 아니면 0리턴
+int strike_check(int shape, int angle, int x, int y); //블럭이 화면 맨 아래에 부닥쳤는지 검사 부닥치면 1을 리턴 아니면 0리턴
 int merge_block(int shape, int angle, int x, int y); //블럭이 바닥에 닿았을때 진행중인 블럭과 쌓아진 블럭을 합침
 int block_start(int shape, int* angle, int* x, int* y); //블럭이 처음 나올때 위치와 모양을 알려줌
 int move_block(int* shape, int* angle, int* x, int* y, int* next_shape); //게임오버는 1을리턴 바닥에 블럭이 닿으면 2를 리턴
@@ -142,8 +142,8 @@ int main(int argc, char* argv[])
 						else {
 							erase_cur_block(block_shape, block_angle, block_x, block_y);
 							for (int i = 0; i < 4; i++) {
-								block_x--;
-								if (strike_check(block_shape, (block_angle + 1) % 4, block_x, block_y) == 0) {
+								if (strike_check(block_shape, (block_angle + 1) % 4, block_x-i-1, block_y) == 0) {
+									block_x = block_x - i - 1;
 									erase_cur_block(block_shape, block_angle, block_x, block_y);
 									block_angle = (block_angle + 1) % 4;
 									show_cur_block(block_shape, block_angle, block_x, block_y);
@@ -224,23 +224,20 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-int gotoxy(int x, int y)
+void gotoxy(int x, int y)
 {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD pos;
-	pos.Y = y;
-	pos.X = x;
-	SetConsoleCursorPosition(hConsole, pos);
-	return 0;
+	COORD pos = { x,y };
+
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+
 }
 
-void SetColor(int color)
-
-{
-	static HANDLE std_output_handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(std_output_handle, color);
-
+void SetColor(int color) {
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (info.wAttributes & 0xf0) | (color & 0xf));
 }
+
 
 int init()
 {
@@ -431,7 +428,7 @@ int strike_check(int shape, int angle, int x, int y)
 			else
 				block_dat = total_block[y + i][x + j];
 
-			if ((block_dat == 1) && (block[shape][angle][i][j] == 1 || y < 0)) //좌측벽의 좌표를 빼기위함, FIXED_6 왼쪽에 일자블록 나오자마자 집어넣으면 Game over 뜨는 오류 수정
+			if (block_dat == 1 && (block[shape][angle][i][j] == 1 || y < -2)) //좌측벽의 좌표를 빼기위함, FIXED_6 왼쪽에 일자블록 나오자마자 집어넣으면 Game over 뜨는 오류 수정
 			{
 				return 1;
 			}
@@ -492,7 +489,7 @@ int move_block(int* shape, int* angle, int* x, int* y, int* next_shape)
 	erase_cur_block(*shape, *angle, *x, *y);
 
 	(*y)++; //블럭을 한칸 아래로 내림
-	if (strike_check(*shape, *angle, *x, *y) == 1)
+	if (strike_check(*shape, *angle, *x, *y))
 	{
 		if (*y <= 0) // FIXED 게임오버 판정 y==0일 때도 게임 오버임 (위에 y++ 때문에 y=-1일때 안먹음.
 		{
