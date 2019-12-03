@@ -123,7 +123,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\테트리~2\Project47\Block.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\테트리~2\Project47\Game.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\테트리~2\Project47\Main.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\테트리~2\Project47\Map.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\테트리~2\Project47\Stage.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Desktop\테트리~2\Project47\Block.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\테트리~2\Project47\Game.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\테트리~2\Project47\Map.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\테트리~2\Project47\Stage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
