@@ -8,6 +8,9 @@ using namespace std;
 class Player
 {
 public:
+	int x;
+	int y;
+
 	enum move {
 		RS,
 		R1,
