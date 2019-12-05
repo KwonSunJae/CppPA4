@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="MichinSi.cpp" />
@@ -103,7 +104,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>

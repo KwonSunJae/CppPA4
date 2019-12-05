@@ -5,10 +5,15 @@
 using namespace std;
 class Console
 {
+public:
 	void clear();
 	void goxy(int x, int y);
-	int getKey_Input(); //키보드 입력
-	void draw_file(int x, int y, string file);
+	void static setFontSize(const int& x, const int& y);
+	void static gotoxy(int x, int y);
+	void static setConsoleSize(const int& x, const int& y);
+	void static setSizeStory();
+	void static setSizeGame();
+	void static setSizeMSel();
 	void Color(int color);
 };
 

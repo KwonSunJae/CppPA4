@@ -1,8 +1,8 @@
-#include <iostream>
-using namespace std;
+#include "Player.h"
+#include "Console.h"
 int main() {
-	cout << "Hello world" << endl;
-	cout << "Bye World!" << endl;
-	cout << "afeafeaf" << endl;
-	cout << "dsaflk" << endl;
+	Player p("s");
+	Console a;
+	a.setSizeMSel();
+	p.MovePlayer();
 }
