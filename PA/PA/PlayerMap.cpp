@@ -70,21 +70,23 @@ void PlayerMap::movePlayer()
 					case 0:
 					
 						
-						if (x + 1 >= 360) {
+						if (x + 2 >= 360) {
 							break;
 						}
 						erasePlayer(x, y);
-						Console::gotoxy(++x, y);
+						x += 2;
+						Console::gotoxy(x, y);
 						user.MovePlayer(ch,x,y);
 						break;
 						
 					case 4:
 						
-						if (x - 1 <= 0) {
+						if (x - 2 <= 0) {
 							break;
 						}
 						erasePlayer(x, y);
-						Console::gotoxy(--x, y);
+						x -= 2;
+						Console::gotoxy(x, y);
 						user.MovePlayer(ch,x,y);
 						break;
 					}
@@ -95,8 +97,8 @@ void PlayerMap::movePlayer()
 			
 		}
 	
-
-		Sleep(300);
+		
+		Sleep(100);
 		
 	};
 }
