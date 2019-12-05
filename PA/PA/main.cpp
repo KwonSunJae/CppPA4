@@ -1,8 +1,6 @@
-#include <iostream>
-using namespace std;
+#include "Player.h"
+
 int main() {
-	cout << "Hello world" << endl;
-	cout << "Bye World!" << endl;
-	cout << "afeafeaf" << endl;
-	cout << "dsaflk" << endl;
+	Player p("s");
+	p.MovePlayer();
 }
