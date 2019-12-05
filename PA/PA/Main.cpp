@@ -1,12 +1,9 @@
-
-
-#include "PlayerMap.h"
+#include "Player.h"
+#include "Console.h"
 int main() {
 	Player p("s");
 	Console a;
-	PlayerMap m("d");
-	a.setSizeGame();
-	m.drawmap("map1.txt");
-	m.movePlayer();
-	
+	a.setSizeMSel();
+	p.MovePlayer();
+
 }
