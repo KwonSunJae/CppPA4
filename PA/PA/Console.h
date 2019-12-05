@@ -2,6 +2,8 @@
 #include <iostream>
 #include <Windows.h>
 #include <string>
+
+#define COMMAND_SIZE 256
 using namespace std;
 class Console
 {

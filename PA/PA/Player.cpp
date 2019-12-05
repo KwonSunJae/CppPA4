@@ -94,7 +94,6 @@ void Player::MovePlayer()
 		}
 		
 		Sleep(300);
-
 	};
 }
 

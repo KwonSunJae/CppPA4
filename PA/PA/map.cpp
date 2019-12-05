@@ -11,10 +11,10 @@ Map::Map() {
 int** Map::genMap() {
 	int** tmap;
 
-	tmap = new int* [size_y+1];
+	tmap = new int* [this->size_y+1];
 	for (int i = 0; i < size_y+1; i++) {
-		tmap[i] = new int[size_x+2];
-		memset(tmap[i], 0, (size_x+2) * sizeof(int));
+		tmap[i] = new int[this->size_x+2];
+		memset(tmap[i], 0, (this->size_x+2) * sizeof(int));
 	}
 
 	for (int i = 0; i < size_y+1; i++) {

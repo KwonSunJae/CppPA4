@@ -41,7 +41,7 @@ void Console::gotoxy(int x, int y)
 
 void Console::setConsoleSize(const int& x, const int& y)
 {
-	char command[256] = { '\0', };
+	char command[COMMAND_SIZE] = { '\0', };
 	int lines = y;
 	int cols = x;
 	sprintf(command, "mode con: lines=%d cols=%d", lines, cols);
@@ -53,7 +53,7 @@ void Console::setSizeStory()
 	/*Console::setFontSize(1, 2);
 	Console::setConsoleSize(500, 200);*/
 	Console::setFontSize(2, 4);
-	Console::setConsoleSize(500, 200);
+	Console::setConsoleSize(501, 190);
 
 }
 
@@ -66,6 +66,6 @@ void Console::setSizeGame()
 void Console::setSizeMSel()
 {
 	Console::setFontSize(2, 4);
-	Console::setConsoleSize(500, 100);
+	Console::setConsoleSize(501, 128);
 
 }
