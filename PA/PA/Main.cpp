@@ -1,3 +1,4 @@
+
 #include "Player.h"
 #include "Console.h"
 int main() {
@@ -5,4 +6,5 @@ int main() {
 	Console a;
 	a.setSizeMSel();
 	p.MovePlayer();
+
 }
