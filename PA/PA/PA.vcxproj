@@ -24,18 +24,26 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MichinSi.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMap.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="MichinSi.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMap.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="UserManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
