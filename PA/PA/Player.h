@@ -10,7 +10,7 @@ class Player
 public:
 	int x;
 	int y;
-
+	string draw[8][15];
 	enum move {
 		RS,
 		R1,
@@ -23,10 +23,11 @@ public:
 	};
 	string IMGfile[8] ;
 	string pname;
+	void Print(int i, int x, int y);
 	int exMove[2] = { RS,0 };
 	void PrintPlayer(int i);
 	Player(string name);
-	void MovePlayer(int i);
+	void MovePlayer(int i, int x, int y);
 	void MovePlayer();
 	~Player();
 };

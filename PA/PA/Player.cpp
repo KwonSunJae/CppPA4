@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <sstream>
+#include "Console.h"
 Player::Player(string name)
 {
 	pname = name;
@@ -7,9 +8,17 @@ Player::Player(string name)
 		stringstream ss;
 		ss << i+1;
 		this->IMGfile[i] = ss.str() + ".txt";
+		this->PrintPlayer(i);
+	}
+	
+}
+void Player::Print(int i,int x, int y) {
+	for (int j = 0; j < 15; j++) {
+		Console::gotoxy(x,y+j);
+		cout << this->draw[i][j];
 	}
 }
-void Player::MovePlayer(int i)
+void Player::MovePlayer(int i, int x, int y)
 {
 	switch (i) {
 	case 72: // up
@@ -20,12 +29,12 @@ void Player::MovePlayer(int i)
 	case 75: // left
 
 		this->exMove[0] = LS;
-		PrintPlayer(5 + this->exMove[1]);
+		Print(5 + this->exMove[1],x,y);
 		this->exMove[1] = (this->exMove[1] + 1) % 2;
 		break;
 	case 77://right
 		this->exMove[0] = RS;
-		PrintPlayer(1 + this->exMove[1]);
+		Print(1 + this->exMove[1],x,y);
 		this->exMove[1] = (this->exMove[1] + 1) % 2;
 		break;
 
@@ -36,8 +45,9 @@ void  Player::PrintPlayer(int i) {
 	ifstream in(file);
 	string s;
 	if (in.is_open()) {
+		int cont = 0;
 		while (getline(in, s)) {
-			cout << s << endl;
+			draw[i][cont++] = s;
 		}
 	}
 	else {
@@ -84,7 +94,7 @@ void Player::MovePlayer()
 		}
 		
 		Sleep(300);
-		system("cls");
+
 	};
 }
 

@@ -1,5 +1,3 @@
-
-
 #include "PlayerMap.h"
 int main() {
 	Player p("s");
@@ -8,5 +6,5 @@ int main() {
 	a.setSizeGame();
 	m.drawmap("map1.txt");
 	m.movePlayer();
-	
+
 }

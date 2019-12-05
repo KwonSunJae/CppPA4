@@ -48,48 +48,51 @@ void erasePlayer(int x, int y) {
 		Console::gotoxy(x, y+i);
 		cout << "                           ";
 	}
+	
 }
 void PlayerMap::movePlayer()
 {
 	x = 0;
-	y = 64;
+	y = 75;
 	while (true) {
 		
-		
+		Console::gotoxy(x, y);
+		user.MovePlayer(user.exMove[0], x, y);
 		int ch;
 		if (_kbhit()) {
 			ch = _getch();
 			if (ch == 224) {
 				ch = _getch();
-				user.MovePlayer(ch);
+				Console::gotoxy(x, y);
+				user.MovePlayer(ch,x,y);
 				if (user.exMove[1] > 0) {
 					switch (user.exMove[0]) {
 					case 0:
 					
-						erasePlayer(x, y);
+						
 						if (x + 1 >= 360) {
 							break;
 						}
+						erasePlayer(x, y);
 						Console::gotoxy(++x, y);
-						user.MovePlayer(ch);
+						user.MovePlayer(ch,x,y);
 						break;
 						
 					case 4:
-						erasePlayer(x, y);
+						
 						if (x - 1 <= 0) {
 							break;
 						}
+						erasePlayer(x, y);
 						Console::gotoxy(--x, y);
-						user.MovePlayer(ch);
+						user.MovePlayer(ch,x,y);
 						break;
 					}
 				}
 
 
 			}
-			if (ch == 13) {
-
-			}
+			
 		}
 	
 
