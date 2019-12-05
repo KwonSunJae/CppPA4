@@ -59,13 +59,13 @@ void Console::setSizeStory()
 
 void Console::setSizeGame()
 {
-	Console::setFontSize(0, 24);
-	Console::setConsoleSize(500, 200);
+	Console::setFontSize(4, 6);
+	Console::setConsoleSize(540, 100);
 }
 
 void Console::setSizeMSel()
 {
 	Console::setFontSize(2, 4);
-	Console::setConsoleSize(500, 130);
+	Console::setConsoleSize(500, 100);
 
 }

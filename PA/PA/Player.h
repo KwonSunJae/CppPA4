@@ -26,6 +26,7 @@ public:
 	int exMove[2] = { RS,0 };
 	void PrintPlayer(int i);
 	Player(string name);
+	void MovePlayer(int i);
 	void MovePlayer();
 	~Player();
 };
