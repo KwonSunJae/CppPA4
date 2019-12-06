@@ -20,6 +20,10 @@ void Block::gen_random_block()
 		int y;
 		if (x == 0 || x == 3) {
 			y = rand() % 4;
+			if (block[8][0][x][y]) {
+				i--;
+				continue;
+			}
 			block[8][0][x][y] = 1;
 			block[8][1][y][3 - x] = 1;
 			block[8][2][3 - x][3 - y] = 1;
@@ -28,12 +32,20 @@ void Block::gen_random_block()
 		else {
 			y = rand() % 2;
 			if (y == 0) {
+				if (block[8][0][x][0]) {
+					i--;
+					continue;
+				}
 				block[8][0][x][0] = 1;
 				block[8][1][0][3 - x] = 1;
 				block[8][2][3 - x][3] = 1;
 				block[8][3][3][x] = 1;
 			}
 			else {
+				if (block[8][0][x][3]) {
+					i--;
+					continue;
+				}
 				block[8][0][x][3] = 1;
 				block[8][1][3][3 - x] = 1;
 				block[8][2][3 - x][0] = 1;

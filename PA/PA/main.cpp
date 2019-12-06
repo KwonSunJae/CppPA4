@@ -3,6 +3,7 @@
 #include "Menu.h"
 #include "Console.h"
 #include "UserManager.h"
+#include "Game.h"
 int main() {
 	Menu mn;
 	mn.printPressStart();
@@ -10,10 +11,6 @@ int main() {
 	mn.menuSel();
 	Console a;
 	a.setSizeStory();
-	Player p("s");
-	PlayerMap m("d");
-	a.setSizeGame();
-	m.drawmap("map1.txt");
-	m.movePlayer();
-
+	Game game;
+	game.play_game();
 }

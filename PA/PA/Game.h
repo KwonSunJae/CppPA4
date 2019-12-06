@@ -1,12 +1,16 @@
 #pragma once
 #include "Map.h"
 #include "Block.h";
+#include "Console.h"
+#include "Block.h"
 class Game
 {
 public:
 
 	Map game_map[10];
+	Console console;
 	Block block;
+
 	enum { // PLUS 열거형 > 윗줄부터 0부터 1씩 더해가면서 자동할당됨.
 		BLACK, /* 0 : 까망 */
 		DARK_BLUE, /* 1 : 어두운 파랑 */
@@ -34,6 +38,7 @@ public:
 	int lines; // 현재 없앤 줄
 	int is_gameover = 0;
 
+	Game();
 	void play_game();
 	void init();
 	int show_cur_block(int shape, int angle, int x, int y); //진행중인 블럭을 화면에 표시한다
@@ -43,7 +48,7 @@ public:
 	int make_new_block(); //return값으로 block의 모양번호를 알려줌
 	int strike_check(int shape, int angle, int x, int y); //블럭이 화면 맨 아래에 부닥쳤는지 검사 부닥치면 1을 리턴 아니면 0리턴
 	int merge_block(int shape, int angle, int x, int y); //블럭이 바닥에 닿았을때 진행중인 블럭과 쌓아진 블럭을 합침
-	int block_start(int shape, int* angle, int* x, int* y); //블럭이 처음 나올때 위치와 모양을 알려줌
+	void block_start(int shape, int* angle, int* x, int* y); //블럭이 처음 나올때 위치와 모양을 알려줌
 	int move_block(int* shape, int* angle, int* x, int* y, int* next_shape); //게임오버는 1을리턴 바닥에 블럭이 닿으면 2를 리턴
 	void show_gameover();
 	void show_gamestat();

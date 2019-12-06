@@ -16,6 +16,7 @@ public:
 	void static setSizeStory();
 	void static setSizeGame();
 	void static setSizeMSel();
+	void static setTetrisGame();
 	void Color(int color);
 };
 

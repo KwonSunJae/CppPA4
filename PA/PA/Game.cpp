@@ -57,10 +57,13 @@ void Game::play_game()
 	const char KEY_UP = 0x48;
 	const char KEY_DOWN = 0x50;
 
+	Console::setTetrisGame();
+
 	while (1)
 	{
 		int i;
 		input_data(); // PLUS i값 입력받은뒤에 난이도 설정. FIXED_2 입력 예외 처리
+		init();
 		show_total_block();// PLUS 플레이 화면에서 테두리 출력.
 		block_shape = make_new_block();
 		next_block_shape = make_new_block();
@@ -68,12 +71,154 @@ void Game::play_game()
 		block_start(block_shape, &block_angle, &block_x, &block_y);
 		show_gamestat();
 		for (i = 1; 1; i++)
-
 		{
+			if (level == 1 || level == 7) {
+				int s = rand() % 30000;
+				if (game_map[level].skill == 0 && s < 10) {
+					game_map[level].fast();
+					game_map[level].skill = level;
+				}
+				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+					game_map[level].fast();
+					if (level == 1) game_map[level].speed = 38;
+					else game_map[level].speed = 10;
+				}
+			}
+			if (level == 2 || level == 7) {
+				int s = rand() % 10000;
+				if (s < 10) {
+					game_map[level].line_up();
+					show_total_block();
+				}
+			}
+			if (level == 3 || level == 7) {
+				int s = rand() % 30000;
+				if (game_map[level].skill == 0 && s < 10) {
+					game_map[level].skill = level;
+				}
+			}
+			if (level == 4 || level == 7) {
+				int s = rand() % 30000;
+				if (game_map[level].skill == 0 && s < 10) {
+					game_map[level].invisible();
+					game_map[level].skill = level;
+				}
+				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+					game_map[level].invisible();
+				}
+			}
+			if (level == 5 || level == 7) {
+				int s = rand() % 30000;
+				if (game_map[level].skill == 0 && s < 10) {
+					game_map[level].random_block();
+					block.gen_random_block();
+					game_map[level].skill = level;
+				}
+			}
+			if (level == 6 || level == 7) {
+				int s = rand() % 30000;
+				if (s < 10) {
+					game_map[level].skill = level;
+
+				}
+			}
 			if (_kbhit())
 			{
 				char keytemp = _getche();
 				if (keytemp == 27) {
+					console.Color(RED);
+
+					if (level == 1) {
+						if (game_map[level].skill == 0) {
+							game_map[level].fast();
+							game_map[level].skill = level;
+
+						}
+						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+							game_map[level].fast();
+							if (level == 1) game_map[level].speed = 38;
+							else game_map[level].speed = 10;
+						}
+					}
+					if (level == 2) {
+						game_map[level].line_up();
+						show_total_block();
+					}
+					if (level == 3) {
+						if (game_map[level].skill == 0) {
+							game_map[level].skill = level;
+						}
+					}
+					if (level == 4) {
+						if (game_map[level].skill == 0) {
+							game_map[level].invisible();
+							game_map[level].skill = level;
+
+						}
+						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+							game_map[level].invisible();
+						}
+					}
+					if (level == 5) {
+						if (game_map[level].skill == 0) {
+							game_map[level].random_block();
+							block.gen_random_block();
+							game_map[level].skill = level;
+						}
+					}
+					if (level == 6) {
+						if (game_map[level].skill == 0) {
+							game_map[level].skill = level;
+						}
+					}
+					if (level == 7) {
+						int s = rand() % 6 + 1;
+						if (s == 1) {
+							if (game_map[level].skill == 0) {
+								game_map[level].fast();
+								game_map[level].skill = level;
+
+							}
+							else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+								game_map[level].fast();
+								if (level == 1) game_map[level].speed = 38;
+								else game_map[level].speed = 10;
+							}
+						}
+						if (s == 2) {
+							game_map[level].line_up();
+							show_total_block();
+						}
+						if (s == 3) {
+							if (game_map[level].skill == 0) {
+								game_map[level].skill = level;
+							}
+						}
+						if (s == 4) {
+							if (game_map[level].skill == 0) {
+								game_map[level].invisible();
+								game_map[level].skill = level;
+
+							}
+							else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+								game_map[level].invisible();
+							}
+						}
+						if (s == 5) {
+							if (game_map[level].skill == 0) {
+								game_map[level].random_block();
+								block.gen_random_block();
+								game_map[level].skill = level;
+							}
+
+						}
+						if (s == 6) {
+							if (game_map[level].skill == 0) {
+								game_map[level].skill = level;
+							}
+						}
+
+					}
 					erase_cur_block(block_shape, block_angle, block_x, block_y);
 					show_cur_block(block_shape, block_angle, block_x, block_y);
 				} // FIXED ESC 누르면 잔상 남는거 처리함.
@@ -116,8 +261,7 @@ void Game::play_game()
 						}
 						break;
 					case KEY_RIGHT: //오른쪽으로 이동
-
-						if (block_x < 14)
+						if (block_x < game_map[level].size_x)
 						{
 							erase_cur_block(block_shape, block_angle, block_x, block_y);
 							block_x++;
@@ -134,8 +278,7 @@ void Game::play_game()
 				}
 				if (keytemp == 32) //스페이스바를 눌렀을때
 				{
-					while (is_gameover == 0)
-					{
+					while (is_gameover == 0) {
 						is_gameover = move_block(&block_shape, &block_angle, &block_x, &block_y, &next_block_shape);
 					}
 					show_cur_block(block_shape, block_angle, block_x, block_y);
@@ -153,11 +296,11 @@ void Game::play_game()
 			{
 				show_gameover();
 				is_gameover = 0; // FIXED_3 게임 오버 시 재 실행하면 계속 FAILED 뜨는거 초기화해서 잡아줌.
-				map.SetColor(GRAY);
+				console.Color(GRAY);
 				break;
 			}
-
-			if (stage_data[level].clear_line <= lines) //클리어 스테이지
+			is_gameover = 0;
+			if (game_map[level].clear_line <= lines) //클리어 스테이지
 			{
 				if (level == 9) {
 					break;
@@ -170,17 +313,19 @@ void Game::play_game()
 
 			}
 
-			map.gotoxy(77, 23);
+			console.gotoxy(77, 23);
 			Sleep(15);
-			map.gotoxy(77, 23);
+			console.gotoxy(77, 23);
 		} // PLUS 게임 하는 부분
-		game_map->map = game_map->genMap();
 	}
 }
 
 void Game::init()
 {
-
+	game_map[level].map = game_map[level].genMap();
+	game_map[level].skill = 0;
+	lines = 0;
+	score = 0;
 }
 
 int Game::show_cur_block(int shape, int angle, int x, int y)
@@ -190,28 +335,33 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 	switch (shape)
 	{
 	case 0:
-		map.SetColor(RED);
+		console.Color(RED);
 		break;
 	case 1:
-		map.SetColor(BLUE);
+		console.Color(BLUE);
 		break;
 	case 2:
-		map.SetColor(SKY_BLUE);
+		console.Color(SKY_BLUE);
 		break;
 	case 3:
-		map.SetColor(WHITE);
+		console.Color(WHITE);
 		break;
 	case 4:
-		map.SetColor(YELLOW);
+		console.Color(YELLOW);
 		break;
 	case 5:
-		map.SetColor(VOILET);
+		console.Color(VOILET);
 		break;
 	case 6:
-		map.SetColor(GREEN);
+		console.Color(GREEN);
+		break;
+	case 7:
+		console.Color(DARK_VOILET);
+		break;
+	case 8:
+		console.Color(DARK_YELLOW);
 		break;
 	}
-
 	for (i = 0; i < 4; i++)
 	{
 		for (j = 0; j < 4; j++)
@@ -219,16 +369,16 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 			if ((j + y) < 0)
 				continue;
 
-			if (Block.block[shape][angle][j][i] > 0)
+			if (block.block[shape][angle][j][i] > 0)
 			{
-				map.gotoxy((i + x) * 2 + ab_x, j + y + ab_y);
+				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
 				printf("■");
 
 			}
 		}
 	}
-	map.SetColor(BLACK);
-	map.gotoxy(77, 23);
+	console.Color(BLACK);
+	console.gotoxy(77, 23);
 	return 0;
 }
 
@@ -239,9 +389,9 @@ int Game::erase_cur_block(int shape, int angle, int x, int y)
 	{
 		for (j = 0; j < 4; j++)
 		{
-			if (Block.block[shape][angle][j][i] == 1)
+			if (block.block[shape][angle][j][i] == 1)
 			{
-				map.gotoxy((i + x) * 2 + ab_x, j + y + ab_y);
+				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
 				printf("  ");
 				//break;
 
@@ -253,43 +403,47 @@ int Game::erase_cur_block(int shape, int angle, int x, int y)
 
 int Game::show_total_block()
 {
+	if ((level == 6 || level == 7) && game_map[level].skill == level) {
+		game_map[level].skill = 0;
+		game_map[level].turn();
+		check_full_line();
+	}
 	int i, j;
-	map.SetColor(DARK_GRAY);
-	for (i = 0; i < 21; i++)
+	console.Color(DARK_GRAY);
+	for (i = 0; i < game_map[level].size_y + 1; i++)
 	{
-		for (j = 0; j < 14; j++)
+		for (j = 0; j < game_map[level].size_x + 2; j++)
 		{
-			if (j == 0 || j == 13 || i == 20) //레벨에 따라 외벽 색이 변함
+			if (j == 0 || j == game_map[level].size_x + 1 || i == game_map[level].size_y) //레벨에 따라 외벽 색이 변함
 			{
-				map.SetColor((level % 6) + 1);
-
+				console.Color((level % 6) + 1);
 			}
 			else {
-				map.SetColor(DARK_GRAY);
+				console.Color(DARK_GRAY);
 			}
-			map.gotoxy((j * 2) + ab_x, i + ab_y);
-			if (total_block[i][j] == 1)
+			console.gotoxy((j * 2) + ab_x - 1, i + ab_y);
+			if (game_map[level].map[i][j] > 0)
 			{
-				printf("■");
+				if ((level == 4 || level == 7) && game_map[level].map[i][j] == 1 && game_map[level].skill == level) cout << "  ";
+				else cout << "■";
 			}
 			else {
 				printf("  ");
 			}
-
 		}
 	}
-	map.SetColor(BLACK);
-	map.gotoxy(77, 23);
+	console.Color(BLACK);
+	console.gotoxy(77, 23);
 	return 0;
 }
 
 int Game::show_next_block(int shape)
 {
 	int i, j;
-	map.SetColor((level + 1) % 6 + 1);
+	console.Color((level + 1) % 6 + 1);
 	for (i = 1; i < 7; i++)
 	{
-		map.gotoxy(33, i);
+		console.gotoxy(44, i);
 		for (j = 0; j < 6; j++)
 		{
 			if (i == 1 || i == 6 || j == 0 || j == 5)
@@ -302,7 +456,7 @@ int Game::show_next_block(int shape)
 
 		}
 	}
-	show_cur_block(shape, 0, 15, 1);
+	show_cur_block(shape, 0, 21, 1);
 	return 0;
 }
 
@@ -310,11 +464,20 @@ int Game::make_new_block()
 {
 	int shape;
 	int i;
+	int shape_value = 6;
 	i = rand() % 100;
-	if (i <= stage_data[level].stick_rate) //막대기 나올확률 계산
+	if (i <= game_map[level].stick_rate) //막대기 나올확률 계산
 		return 0; //막대기 모양으로 리턴
 
-	shape = (rand() % 6) + 1; //shape에는 1~6의 값이 들어감
+	if ((level == 5 || level == 7) && game_map[level].skill == level) {
+		shape = 8;
+		game_map[level].random_block();
+	}
+	else if ((level == 3 || level == 7) && game_map[level].skill == level) {
+		shape = 7;
+		game_map[level].f_block();
+	}
+	else shape = (rand() % shape_value) + 1; //shape에는 1~6의 값이 들어감
 	show_next_block(shape);
 	return shape;
 }
@@ -322,20 +485,22 @@ int Game::make_new_block()
 int Game::strike_check(int shape, int angle, int x, int y)
 {
 	int i, j;
-	int block_dat;
+	int block_dat = 0;
 
 	for (i = 0; i < 4; i++)
 	{
 		for (j = 0; j < 4; j++)
 		{
-			if (((x + j) == 0) || ((x + j) == 13))
-				block_dat = 1;
-			else
-				block_dat = total_block[y + i][x + j];
+			if (y + i >= 0 && y + i <= game_map[level].size_y && x + j <= game_map[level].size_x + 1) {
+				if (((x + j) == game_map[level].size_x + 1))
+					block_dat = 1;
+				else
+					block_dat = game_map[level].map[y + i][x + j];
 
-			if (block_dat == 1 && (Block.block[shape][angle][i][j] == 1 || y < -2)) //좌측벽의 좌표를 빼기위함, FIXED_6 왼쪽에 일자블록 나오자마자 집어넣으면 Game over 뜨는 오류 수정
-			{
-				return 1;
+				if (block_dat != 0 && (block.block[shape][angle][i][j] == 1 || y < -2)) //좌측벽의 좌표를 빼기위함, FIXED_6 왼쪽에 일자블록 나오자마자 집어넣으면 Game over 뜨는 오류 수정
+				{
+					return 1;
+				}
 			}
 		}
 	}
@@ -349,7 +514,8 @@ int Game::merge_block(int shape, int angle, int x, int y)
 	{
 		for (j = 0; j < 4; j++)
 		{
-			total_block[y + i][x + j] |= Block.block[shape][angle][i][j];
+			game_map[level].map[y + i][x + j] |= block.block[shape][angle][i][j];
+			cout << game_map[level].map[y + i][x + j];
 		}
 	}
 	check_full_line();
@@ -358,12 +524,11 @@ int Game::merge_block(int shape, int angle, int x, int y)
 	return 0;
 }
 
-int Game::block_start(int shape, int* angle, int* x, int* y)
+void Game::block_start(int shape, int* angle, int* x, int* y)
 {
 	*x = 5;
 	*y = -3;
 	*angle = 0;
-	return 0;
 }
 
 int Game::move_block(int* shape, int* angle, int* x, int* y, int* next_shape)
@@ -390,18 +555,18 @@ int Game::move_block(int* shape, int* angle, int* x, int* y, int* next_shape)
 	return 0;
 }
 
-int Game::show_gameover()
+void Game::show_gameover()
 {
-	map.SetColor(12);	// RED = 12
-	map.gotoxy(15, 8);
+	console.Color(12);	// RED = 12
+	console.gotoxy(15, 8);
 	cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
-	map.gotoxy(15, 9);
+	console.gotoxy(15, 9);
 	cout << "┃**************************┃";
-	map.gotoxy(15, 10);
+	console.gotoxy(15, 10);
 	cout << "┃*        GAME OVER       *┃";
-	map.gotoxy(15, 11);
+	console.gotoxy(15, 11);
 	cout << "┃**************************┃";
-	map.gotoxy(15, 12);
+	console.gotoxy(15, 12);
 	cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 	fflush(stdin);
 	Sleep(1000);
@@ -409,60 +574,58 @@ int Game::show_gameover()
 	_getche();
 	system("cls");
 
-	return 0;
 }
 
-int Game::show_gamestat()
+void Game::show_gamestat()
 {
 	static int printed_text = 0;
-	map.SetColor(GRAY);
+	console.Color(GRAY);
 	if (printed_text == 0)
 	{
-		map.gotoxy(35, 7);
+		console.gotoxy(46, 7);
 		cout << "STAGE";
 
-		map.gotoxy(35, 9);
+		console.gotoxy(46, 9);
 		cout << "SCORE";
 
-		map.gotoxy(35, 12);
+		console.gotoxy(46, 12);
 		cout << "LINES";
 
 	}
-	map.gotoxy(41, 7);
+	console.gotoxy(52, 7);
 	cout << level + 1;
-	map.gotoxy(35, 10);
+	console.gotoxy(46, 10);
 	cout << score;
-	map.gotoxy(35, 13);
-	int remain = stage_data[level].clear_line - lines;
+	console.gotoxy(46, 13);
+	int remain = game_map[level].clear_line - lines;
 	cout << remain;
-	return 0;
 }
 
-int Game::show_logo()
+void Game::show_logo()
 {
 	int i, j;
-	map.gotoxy(13, 3);
+	console.gotoxy(13, 3);
 	cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
 	Sleep(100);
-	map.gotoxy(13, 4);
+	console.gotoxy(13, 4);
 	cout << "┃◆◆◆  ◆◆◆  ◆◆◆   ◆◆     ◆   ◆  ◆┃";
 	Sleep(100);
-	map.gotoxy(13, 5);
+	console.gotoxy(13, 5);
 	cout << "┃  ◆    ◆        ◆     ◆ ◆    ◆    ◆◆ ┃";
 	Sleep(100);
-	map.gotoxy(13, 6);
+	console.gotoxy(13, 6);
 	cout << "┃  ◆    ◆◆◆    ◆     ◆◆     ◆     ◆  ┃";
 	Sleep(100);
-	map.gotoxy(13, 7);
+	console.gotoxy(13, 7);
 	cout << "┃  ◆    ◆        ◆     ◆ ◆    ◆    ◆◆ ┃";
 	Sleep(100);
-	map.gotoxy(13, 8);
+	console.gotoxy(13, 8);
 	cout << "┃  ◆    ◆◆◆    ◆     ◆  ◆   ◆   ◆  ◆┃";
 	Sleep(100);
-	map.gotoxy(13, 9);
+	console.gotoxy(13, 9);
 	cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
-	map.gotoxy(28, 20);
+	console.gotoxy(28, 20);
 	cout << "Please Press Any Key~!";
 
 	for (i = 0; i >= 0; i++)
@@ -473,7 +636,7 @@ int Game::show_logo()
 			for (j = 0; j < 80; j++)
 			{
 				for (int z = 0; z < 5; z++) {
-					map.gotoxy(6 + j, 14 + z);
+					console.gotoxy(6 + j, 14 + z);
 					cout << "  ";
 				}
 
@@ -491,40 +654,39 @@ int Game::show_logo()
 	_getche();
 	system("cls");
 
-	return 0;
 }
 
-int Game::input_data()
+void Game::input_data()
 {
 	int i = 0;
 	while (i < 1 || i > 10)
 	{
 		system("cls");
-		map.SetColor(GRAY);
-		map.gotoxy(10, 7);
+		console.Color(GRAY);
+		console.gotoxy(10, 7);
 		cout << "┏━━━━━━━━━<GAME KEY>━━━━━━━━━┓";
 		Sleep(10);
-		map.gotoxy(10, 8);
+		console.gotoxy(10, 8);
 		cout << "┃ UP   : Rotate Block        ┃";
 		Sleep(10);
-		map.gotoxy(10, 9);
+		console.gotoxy(10, 9);
 		cout << "┃ DOWN : Move One-Step Down  ┃";
 		Sleep(10);
-		map.gotoxy(10, 10);
+		console.gotoxy(10, 10);
 		cout << "┃ SPACE: Move Bottom Down    ┃";
 		Sleep(10);
-		map.gotoxy(10, 11);
+		console.gotoxy(10, 11);
 		cout << "┃ LEFT : Move Left           ┃";
 		Sleep(10);
-		map.gotoxy(10, 12);
+		console.gotoxy(10, 12);
 		cout << "┃ RIGHT: Move Right          ┃";
 		Sleep(10);
-		map.gotoxy(10, 13);
+		console.gotoxy(10, 13);
 		cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 
 
 		rewind(stdin);
-		map.gotoxy(10, 3);
+		console.gotoxy(10, 3);
 		cout << "Select Start level[1-10]: ";
 		cin >> i;
 	}
@@ -535,32 +697,31 @@ int Game::input_data()
 
 	level = i - 1;
 	system("cls");
-	return 0;
 }
 
-int Game::check_full_line()
+void Game::check_full_line()
 {
 	int i, j, k;
-	for (i = 0; i < 20; i++)
+	for (i = 0; i < game_map[level].size_y; i++)
 	{
-		for (j = 1; j < 13; j++)
+		for (j = 1; j <= game_map[level].size_x; j++)
 		{
-			if (total_block[i][j] == 0)
+			if (game_map[level].map[i][j] == 0)
 				break;
 		}
-		if (j == 13) //한줄이 다 채워졌음
+		if (j == game_map[level].size_x + 1) //한줄이 다 채워졌음
 		{
 			lines++;
 			show_total_block();
-			map.SetColor(BLUE);
-			map.gotoxy(1 * 2 + ab_x, i + ab_y);
-			for (j = 1; j < 13; j++)
+			console.Color(BLUE);
+			console.gotoxy(1 * 2 + ab_x - 1, i + ab_y);
+			for (j = 0; j <= game_map[level].size_x - 1; j++)
 			{
 				printf("□");
 				Sleep(10);
 			}
-			map.gotoxy(1 * 2 + ab_x, i + ab_y);
-			for (j = 1; j < 13; j++)
+			console.gotoxy(1 * 2 + ab_x - 1, i + ab_y);
+			for (j = 0; j <= game_map[level].size_x - 1; j++)
 			{
 				printf("  ");
 				Sleep(10);
@@ -568,14 +729,13 @@ int Game::check_full_line()
 
 			for (k = i; k > 0; k--)
 			{
-				for (j = 1; j < 13; j++)
-					total_block[k][j] = total_block[k - 1][j];
+				for (j = 1; j <= game_map[level].size_x; j++)
+					game_map[level].map[k][j] = game_map[level].map[k - 1][j];
 			}
-			for (j = 1; j < 13; j++)
-				total_block[0][j] = 0;
+			for (j = 1; j <= game_map[level].size_x; j++)
+				game_map[level].map[0][j] = 0;
 			score += 100 + (level * 10) + (rand() % 10);
 			show_gamestat();
 		}
 	}
-	return 0;
 }
