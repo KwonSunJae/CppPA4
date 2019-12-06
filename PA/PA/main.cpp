@@ -13,7 +13,7 @@ int main() {
 	Player p("s");
 	PlayerMap m("d");
 	a.setSizeGame();
-	m.drawmap("map1.txt");
+	m.drawmap("maap.txt");
 	m.movePlayer();
 
 }

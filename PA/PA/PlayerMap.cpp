@@ -10,43 +10,28 @@ void PlayerMap::drawmap(string filename)
 {
 	
 	ifstream is(filename);
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 18; j++) {
-			is >> map[i][j];
-		}
+	
+	string temp;
+	for (int i = 0; i < 256; i++) {
+		getline(is, temp);
+		cout << temp<<endl;
 	}
-
-	string filename2 = "block.txt";
-	ifstream in(filename2);
-	string* temp = new string[5];
-	for (int i = 0; i < 5; i++) {
-		getline(in, temp[i]);
-	}
-	for (int i = 0; i < 10;i++) {
-		for (int j = 0; j < 18; j++) {
-			if (map[i][j] == 0)continue;
-			
-			for (int x = 0; x < 5; x++) {
-				Console::gotoxy(j * 30, i * 10+x);
-				cout << temp[x];
-			}
-		}
-	}
+	
 }
 
 PlayerMap::~PlayerMap()
 {
 }
 
-bool PlayerMap::StrikeCheck()
+bool PlayerMap::StrikeCheck(int x, int y)
 {
 	
-	return map[user.y][user.x]==1?true:false;
+	return map[y][x]==1?true:false;
 }
 void erasePlayer(int x, int y) {
 	for (int i = 0; i < 15; i++) {
 		Console::gotoxy(x, y+i);
-		cout << "                           ";
+		cout << "                                        ";
 	}
 	
 }
@@ -56,47 +41,75 @@ void PlayerMap::movePlayer()
 	y = 75;
 	while (true) {
 		
+		
 		Console::gotoxy(x, y);
 		user.MovePlayer(user.exMove[0], x, y);
 		int ch;
 		if (_kbhit()) {
-			ch = _getch();
-			if (ch == 224) {
+			
+
+			for (int i = 0; i < 5; i++) {
 				ch = _getch();
-				Console::gotoxy(x, y);
-				user.MovePlayer(ch,x,y);
-				if (user.exMove[1] > 0) {
-					switch (user.exMove[0]) {
-					case 0:
+				
+				if (ch == 224) {
+					ch = _getch();
+					user.MovePlayer(ch, x, y);
 					
-						
-						if (x + 2 >= 360) {
-							break;
-						}
+					if (ch == 72) {
 						erasePlayer(x, y);
-						x += 2;
-						Console::gotoxy(x, y);
-						user.MovePlayer(ch,x,y);
-						break;
-						
-					case 4:
-						
-						if (x - 2 <= 0) {
-							break;
-						}
-						erasePlayer(x, y);
-						x -= 2;
-						Console::gotoxy(x, y);
-						user.MovePlayer(ch,x,y);
-						break;
+						Console::gotoxy(x, y - 3); y = y - 3;
+
+						user.MovePlayer(ch, x, y);
+
+						Sleep(100);
+						continue;
 					}
+					if (ch == 80) {
+						erasePlayer(x, y);
+						Console::gotoxy(x, y + 3); y = y + 3;
+						
+						user.MovePlayer(ch, x, y);
+						Sleep(100);
+						continue;
+					}
+					if (user.exMove[1] > 0) {
+						switch (user.exMove[0]) {
+						case 0:
+
+							if (x + 6 >= 700) {
+								break;
+							}
+							erasePlayer(x, y);
+							x += 6;
+							Console::gotoxy(x, y);
+							user.MovePlayer(ch, x, y);
+							break;
+
+						case 4:
+
+							if (x - 6 < 0) {
+								break;
+							}
+							erasePlayer(x, y);
+							x -= 6;
+							Console::gotoxy(x, y);
+							user.MovePlayer(ch, x, y);
+							break;
+						}
+					}
+					else {
+						erasePlayer(x, y);
+						Console::gotoxy(x, y);
+						user.MovePlayer(ch, x, y);
+
+					}
+
+
 				}
 
-
 			}
-			
 		}
-	
+		
 		
 		Sleep(100);
 		

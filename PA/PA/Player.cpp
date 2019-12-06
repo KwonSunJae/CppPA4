@@ -22,9 +22,10 @@ void Player::MovePlayer(int i, int x, int y)
 {
 	switch (i) {
 	case 72: // up
-		PrintPlayer(this->exMove[0] + 3);
+		Print(this->exMove[0] + 3,x,y);
 		break;
 	case 80: // down
+		Print(this->exMove[0] + 3,x,y);
 		break;
 	case 75: // left
 
@@ -67,6 +68,7 @@ void Player::MovePlayer()
 					PrintPlayer(this->exMove[0]+3);
 					break;
 				case 80: // down
+					PrintPlayer(this->exMove[0] + 3);
 					break;
 				case 75: // left
 					
@@ -82,9 +84,6 @@ void Player::MovePlayer()
 
 				}
 			
-				
-			}
-			if (ch == 13) {
 				
 			}
 		}

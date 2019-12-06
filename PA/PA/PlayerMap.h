@@ -14,7 +14,7 @@ public:
 	PlayerMap(string name);
 	void drawmap(string filename);
 	~PlayerMap();
-	bool StrikeCheck();
+	bool StrikeCheck(int x, int y);
 	void movePlayer();
 };
 
