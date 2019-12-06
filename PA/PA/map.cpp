@@ -98,9 +98,7 @@ void Map::turn() {
 	for (i = 0; i < size_y; i++) {
 		for (j = 1; j < size_x + 1; j++) {
 			map[i][j] = temp_map[i][j];
-			cout << map[i][j];
 		}
-		cout << endl;
 	}
 	for (i = 0; i < size_y + 1; i++) delete[] temp_map[i];
 	delete[] temp_map;
