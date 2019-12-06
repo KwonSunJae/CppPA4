@@ -49,7 +49,46 @@ Game::Game() {
 	game_map[9].stick_rate = 11;
 	game_map[9].clear_line = 99999;
 }
+void PrintBlock(int x, int y) {
+	int tempy = y;
+	Console::gotoxy(x, tempy++);
+	cout << "v rvvvvvvvLvviBM";
+	Console::gotoxy(x, tempy++);
+	cout << "7            .Ml";
+	Console::gotoxy(x, tempy++);
+	cout << "7.7777777777:B@l";
+	Console::gotoxy(x, tempy++);
+	cout << "r.:ri;iri;ii.XBl";
+	Console::gotoxy(x, tempy++);
+	cout << "7.iiiiiiiii:.S@l";
+	Console::gotoxy(x, tempy++);
+	cout << "r.:i:i:i:i::.X@l";
+	Console::gotoxy(x, tempy++);
+	cout << "r .......... 2@l";
+	Console::gotoxy(x, tempy++);
+	cout << "i.0MZW08ZWZZ2@Ml";
 
+}
+void PrintVoid(int x, int y) {
+	int tempy = y;
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+
+}
 void Game::play_game()
 {
 	const char EXT_KEY = 0xffffffe0;
@@ -58,21 +97,10 @@ void Game::play_game()
 	const char KEY_UP = 0x48;
 	const char KEY_DOWN = 0x50;
 
-	Console::setTetrisGame();
+	
 
 	string check;
-	while (true) {
-		cout << "shadow 기능을 사용하시겠습니까? (y/n) : ";
-		cin >> check;
-		if (check == "y") {
-			shadow = true;
-			break;
-		}
-		else if (check == "n") {
-			shadow = false;
-			break;
-		}
-	}
+	
 
 	while (1)
 	{
@@ -387,14 +415,14 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 
 			if (block.block[shape][angle][j][i] > 0)
 			{
-				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
-				printf("■");
+				
+				PrintBlock((i + x) * 16 + ab_x - 1, (j + y)*8 + ab_y);
 			}
 		}
 	}
 
-	if (shadow) {
-		shadow_x = x;
+	/*if (shadow) {
+		shadow_x = (x-3)/2;
 		shadow_y = y;
 		int shadowgm=0;
 		while (shadowgm == 0) {
@@ -415,7 +443,7 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 				}
 			}
 		}
-	}
+	}*/
 
 	console.Color(BLACK);
 	console.gotoxy(77, 23);
@@ -432,7 +460,7 @@ int Game::erase_cur_block(int shape, int angle, int x, int y)
 			if (block.block[shape][angle][j][i] == 1)
 			{
 				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
-				printf("　");
+				PrintVoid((i + x) * 16 + ab_x - 1, (j + y) * 8 + ab_y);
 				//break;
 
 			}
@@ -464,11 +492,11 @@ int Game::show_total_block()
 			console.gotoxy((j * 2) + ab_x - 1, i + ab_y);
 			if (game_map[level].map[i][j] > 0)
 			{
-				if ((level == 4 || level == 7) && game_map[level].map[i][j] == 1 && game_map[level].skill == level) cout << "  ";
-				else cout << "■";
+				if ((level == 4 || level == 7) && game_map[level].map[i][j] == 1 && game_map[level].skill == level) PrintVoid((j * 16) + ab_x - 1, i * 8 + ab_y);
+				else PrintBlock((j * 16) + ab_x - 1, i * 8 + ab_y);
 			}
 			else {
-				printf("  ");
+				PrintVoid((j * 16) + ab_x - 1, i * 8 + ab_y);
 			}
 		}
 	}
@@ -488,10 +516,10 @@ int Game::show_next_block(int shape)
 		{
 			if (i == 1 || i == 6 || j == 0 || j == 5)
 			{
-				printf("■");
+				PrintBlock(18 * 16 + 36+16*j, i * 8-7);
 			}
 			else {
-				printf("　");
+				PrintVoid(18 * 16 + 36 + 16 * j, i * 8-7);
 			}
 
 		}
