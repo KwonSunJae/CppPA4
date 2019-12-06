@@ -35,6 +35,10 @@ void erasePlayer(int x, int y) {
 	}
 	
 }
+void ShowMat(int x, int y) {
+	Console::gotoxy(700, 0);
+	cout <<x<< "," << y;
+}
 void PlayerMap::movePlayer()
 {
 	x = 0;
@@ -60,7 +64,7 @@ void PlayerMap::movePlayer()
 						Console::gotoxy(x, y - 3); y = y - 3;
 
 						user.MovePlayer(ch, x, y);
-
+						
 						Sleep(100);
 						continue;
 					}
@@ -106,7 +110,7 @@ void PlayerMap::movePlayer()
 
 
 				}
-
+				ShowMat(x, y);
 			}
 		}
 		
