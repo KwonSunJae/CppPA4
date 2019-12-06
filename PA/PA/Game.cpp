@@ -88,7 +88,6 @@ void PrintErase(int x, int y) {
 	cout << "r             @l";
 	Console::gotoxy(x, tempy++);
 	cout << "i.0MZW08ZWZZ2@Ml";
-
 }
 void PrintVoid(int x, int y) {
 	int tempy = y;
@@ -119,21 +118,10 @@ void Game::play_game()
 	const char KEY_UP = 0x48;
 	const char KEY_DOWN = 0x50;
 
-	Console::setTetrisGame();
+	
 
 	string check;
-	while (true) {
-		cout << "shadow 기능을 사용하시겠습니까? (y/n) : ";
-		cin >> check;
-		if (check == "y") {
-			shadow = true;
-			break;
-		}
-		else if (check == "n") {
-			shadow = false;
-			break;
-		}
-	}
+	
 
 	while (1)
 	{
@@ -152,7 +140,7 @@ void Game::play_game()
 				int s = rand() % 30000;
 				if (game_map[level].skill == 0 && s < 10) {
 					game_map[level].fast();
-					game_map[level].skill = level;
+					game_map[level].skill = 1;
 				}
 				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
 					game_map[level].fast();
@@ -170,14 +158,14 @@ void Game::play_game()
 			if (level == 3 || level == 7) {
 				int s = rand() % 30000;
 				if (game_map[level].skill == 0 && s < 10) {
-					game_map[level].skill = level;
+					game_map[level].skill = 3;
 				}
 			}
 			if (level == 4 || level == 7) {
 				int s = rand() % 30000;
 				if (game_map[level].skill == 0 && s < 10) {
 					game_map[level].invisible();
-					game_map[level].skill = level;
+					game_map[level].skill = 4;
 				}
 				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
 					game_map[level].invisible();
@@ -185,16 +173,18 @@ void Game::play_game()
 			}
 			if (level == 5 || level == 7) {
 				int s = rand() % 30000;
-				if (game_map[level].skill == 0 && s < 10) {
+				if (game_map[level].skill == 0 && block_shape < 8 && s < 10) {
 					game_map[level].random_block();
 					block.gen_random_block();
-					game_map[level].skill = level;
+					game_map[level].skill = 5;
 				}
 			}
 			if (level == 6 || level == 7) {
 				int s = rand() % 30000;
 				if (s < 10) {
-					game_map[level].skill = level;
+					game_map[level].turn();
+					show_total_block();
+					check_full_line();
 
 				}
 			}
@@ -207,7 +197,7 @@ void Game::play_game()
 					if (level == 1) {
 						if (game_map[level].skill == 0) {
 							game_map[level].fast();
-							game_map[level].skill = level;
+							game_map[level].skill = 1;
 
 						}
 						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
@@ -222,15 +212,15 @@ void Game::play_game()
 					}
 					if (level == 3) {
 						if (game_map[level].skill == 0) {
-							game_map[level].skill = level;
+							game_map[level].skill = 3;
 						}
 					}
 
 					if (level == 4) {
 						if (game_map[level].skill == 0) {
 							game_map[level].invisible();
-							game_map[level].skill = level;
-
+							game_map[level].skill = 4;
+							show_total_block();
 						}
 						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
 							game_map[level].invisible();
@@ -240,23 +230,25 @@ void Game::play_game()
 						if (game_map[level].skill == 0) {
 							game_map[level].random_block();
 							block.gen_random_block();
-							game_map[level].skill = level;
+							game_map[level].skill = 5;
 						}
 					}
 					if (level == 6) {
 						if (game_map[level].skill == 0) {
-							game_map[level].skill = level;
+							game_map[level].turn();
+							show_total_block();
+							check_full_line();
 						}
 					}
-					if (level == 7) {
+					if (level == 7 && game_map[level].skill == 0) {
 						int s = rand() % 6 + 1;
 						if (s == 1) {
 							if (game_map[level].skill == 0) {
 								game_map[level].fast();
-								game_map[level].skill = level;
+								game_map[level].skill = 1;
 
 							}
-							else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+							else if (game_map[level].skill == 1 && time(NULL) - game_map[level].time_now > 5) {
 								game_map[level].fast();
 								if (level == 1) game_map[level].speed = 38;
 								else game_map[level].speed = 10;
@@ -268,30 +260,33 @@ void Game::play_game()
 						}
 						if (s == 3) {
 							if (game_map[level].skill == 0) {
-								game_map[level].skill = level;
+								game_map[level].skill = 3;
 							}
 						}
 						if (s == 4) {
 							if (game_map[level].skill == 0) {
 								game_map[level].invisible();
-								game_map[level].skill = level;
+								game_map[level].skill = 4;
+								show_total_block();
 
 							}
-							else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+							else if (game_map[level].skill == 4 && time(NULL) - game_map[level].time_now > 5) {
 								game_map[level].invisible();
 							}
 						}
 						if (s == 5) {
-							if (game_map[level].skill == 0) {
+							if (game_map[level].skill == 0 && block_shape < 8) {
 								game_map[level].random_block();
 								block.gen_random_block();
-								game_map[level].skill = level;
+								game_map[level].skill = 5;
 							}
 
 						}
 						if (s == 6) {
 							if (game_map[level].skill == 0) {
-								game_map[level].skill = level;
+								game_map[level].turn();
+								show_total_block();
+								check_full_line();
 							}
 						}
 
@@ -448,14 +443,14 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 
 			if (block.block[shape][angle][j][i] > 0)
 			{
-				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
-				printf("■");
+				
+				PrintBlock((i + x) * 16 + ab_x - 1, (j + y)*8 + ab_y);
 			}
 		}
 	}
 
-	if (shadow) {
-		shadow_x = x;
+	/*if (shadow) {
+		shadow_x = (x-3)/2;
 		shadow_y = y;
 		int shadowgm=0;
 		while (shadowgm == 0) {
@@ -476,7 +471,7 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 				}
 			}
 		}
-	}
+	}*/
 
 	console.Color(BLACK);
 	console.gotoxy(77, 23);
@@ -493,7 +488,7 @@ int Game::erase_cur_block(int shape, int angle, int x, int y)
 			if (block.block[shape][angle][j][i] == 1)
 			{
 				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
-				printf("　");
+				PrintVoid((i + x) * 16 + ab_x - 1, (j + y) * 8 + ab_y);
 				//break;
 
 			}
@@ -525,11 +520,11 @@ int Game::show_total_block()
 			console.gotoxy((j * 2) + ab_x - 1, i + ab_y);
 			if (game_map[level].map[i][j] > 0)
 			{
-				if ((level == 4 || level == 7) && game_map[level].map[i][j] == 1 && game_map[level].skill == level) cout << "  ";
-				else cout << "■";
+				if ((level == 4 || level == 7) && game_map[level].map[i][j] == 1 && game_map[level].skill == level) PrintVoid((j * 16) + ab_x - 1, i * 8 + ab_y);
+				else PrintBlock((j * 16) + ab_x - 1, i * 8 + ab_y);
 			}
 			else {
-				printf("  ");
+				PrintVoid((j * 16) + ab_x - 1, i * 8 + ab_y);
 			}
 		}
 	}
@@ -549,10 +544,10 @@ int Game::show_next_block(int shape)
 		{
 			if (i == 1 || i == 6 || j == 0 || j == 5)
 			{
-				printf("■");
+				PrintBlock(18 * 16 + 36+16*j, i * 8-7);
 			}
 			else {
-				printf("　");
+				PrintVoid(18 * 16 + 36 + 16 * j, i * 8-7);
 			}
 
 		}
