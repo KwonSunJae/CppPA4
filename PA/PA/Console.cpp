@@ -69,3 +69,9 @@ void Console::setSizeMSel()
 	Console::setConsoleSize(501, 128);
 
 }
+
+void Console::setTetrisGame()
+{
+	Console::setFontSize(5, 10);
+	Console::setConsoleSize(80, 50);
+}
