@@ -30,6 +30,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMap.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="temp.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserManager.cpp" />
   </ItemGroup>

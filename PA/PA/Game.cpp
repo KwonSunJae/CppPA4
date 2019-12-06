@@ -42,12 +42,7 @@ Game::Game() {
 	game_map[7].speed = 10;
 	game_map[7].stick_rate = 13;
 	game_map[7].clear_line = 20;
-	game_map[8].speed = 6;
-	game_map[8].stick_rate = 12;
-	game_map[8].clear_line = 20;
-	game_map[9].speed = 4;
-	game_map[9].stick_rate = 11;
-	game_map[9].clear_line = 99999;
+	
 }
 
 void PrintBlock(int x, int y) {
@@ -110,7 +105,7 @@ void PrintVoid(int x, int y) {
 
 }
 
-void Game::play_game()
+bool Game::play_game()
 {
 	const char EXT_KEY = 0xffffffe0;
 	const char KEY_LEFT = 0x4b;
@@ -126,7 +121,7 @@ void Game::play_game()
 	while (1)
 	{
 		int i;
-		input_data(); // PLUS i값 입력받은뒤에 난이도 설정. FIXED_2 입력 예외 처리
+		
 		init();
 		show_total_block();// PLUS 플레이 화면에서 테두리 출력.
 		block_shape = make_new_block();
@@ -366,22 +361,22 @@ void Game::play_game()
 
 			if (is_gameover == 1)
 			{
-				show_gameover();
+				
 				is_gameover = 0; // FIXED_3 게임 오버 시 재 실행하면 계속 FAILED 뜨는거 초기화해서 잡아줌.
 				console.Color(GRAY);
-				break;
+				return false;
 			}
 			is_gameover = 0;
 			if (game_map[level].clear_line <= lines) //클리어 스테이지
 			{
-				if (level == 9) {
-					break;
-				}//  레벨 10클리어시 레벨 11로넘어가는 오류 수정
-				level++;
+				
+			
+				
 				lines = 0;
 				show_total_block(); // FIXED 스코어, 테두리 색깔 안바뀌는거 처리함.
 				show_next_block(next_block_shape); // FIXED 스코어, 테두리 색깔 안바뀌는거 처리함.
 				show_gamestat(); // FIXED 스코어, 테두리 색깔 안바뀌는거 처리함.
+				return true;
 
 			}
 

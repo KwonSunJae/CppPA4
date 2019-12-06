@@ -19,6 +19,12 @@ void Console::Color(int color)
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (info.wAttributes & 0xf0) | (color & 0xf));
 }
 
+void Console::showMatrix(int x, int y)
+{
+	Console::setFontSize(8, 12);
+	Console::setConsoleSize(200, 100);
+}
+
 void Console::setFontSize(const int& x, const int& y)
 {
 	CONSOLE_FONT_INFOEX cfi;

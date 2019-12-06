@@ -18,5 +18,6 @@ public:
 	void static setSizeMSel();
 	void static setTetrisGame();
 	void Color(int color);
+	void static showMatrix(int x, int y);
 };
 

@@ -29,7 +29,11 @@ public:
 		YELLOW, /* 14 : 노랑 */
 		WHITE, /* 15 : 하양 */
 	};
-
+	int sk2_time;
+	int sk5_time;
+	int speed_temp;
+	bool help_skills[8];
+	bool is_used[8];
 	int level; // 현재 레벨
 	int ab_x, ab_y; //화면중 블럭이 나타나는 좌표의 절대위치
 	int block_shape, block_angle, block_x, block_y; // 블럭 모양, 블럭 각도, 블럭 x, y좌표
@@ -41,7 +45,7 @@ public:
 	bool shadow;
 
 	Game();
-	void play_game();
+	bool play_game();
 	void init();
 	int show_cur_block(int shape, int angle, int x, int y); //진행중인 블럭을 화면에 표시한다
 	int erase_cur_block(int shape, int angle, int x, int y); //블럭 진행의 잔상을 지우기 위한 함수
