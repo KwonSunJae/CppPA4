@@ -50,6 +50,67 @@ Game::Game() {
 	game_map[9].clear_line = 99999;
 }
 
+void PrintBlock(int x, int y) {
+	int tempy = y;
+	Console::gotoxy(x, tempy++);
+	cout << "v rvvvvvvvLvviBM";
+	Console::gotoxy(x, tempy++);
+	cout << "7 ''''''''''''Ml";
+	Console::gotoxy(x, tempy++);
+	cout << "7.7777777777:B@l";
+	Console::gotoxy(x, tempy++);
+	cout << "r.:ri;iri;ii.XBl";
+	Console::gotoxy(x, tempy++);
+	cout << "7.iiiiiiiii:.S@l";
+	Console::gotoxy(x, tempy++);
+	cout << "r.:i:i:i:i::.X@l";
+	Console::gotoxy(x, tempy++);
+	cout << "r .......... 2@l";
+	Console::gotoxy(x, tempy++);
+	cout << "i.0MZW08ZWZZ2@Ml";
+
+}
+void PrintErase(int x, int y) {
+	int tempy = y;
+	Console::gotoxy(x, tempy++);
+	cout << "v rvvvvvvvLvviBM";
+	Console::gotoxy(x, tempy++);
+	cout << "7             @l";
+	Console::gotoxy(x, tempy++);
+	cout << "7             @l";
+	Console::gotoxy(x, tempy++);
+	cout << "r             Bl";
+	Console::gotoxy(x, tempy++);
+	cout << "7             @l";
+	Console::gotoxy(x, tempy++);
+	cout << "r             @l";
+	Console::gotoxy(x, tempy++);
+	cout << "r             @l";
+	Console::gotoxy(x, tempy++);
+	cout << "i.0MZW08ZWZZ2@Ml";
+
+}
+void PrintVoid(int x, int y) {
+	int tempy = y;
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+	Console::gotoxy(x, tempy++);
+	cout << "                ";
+
+}
+
 void Game::play_game()
 {
 	const char EXT_KEY = 0xffffffe0;
@@ -277,7 +338,7 @@ void Game::play_game()
 						}
 						break;
 					case KEY_RIGHT: //오른쪽으로 이동
-						if (block_x < game_map[level].size_x)
+						if ((block_x < game_map[level].size_x - 3 && block_y < 0) || (block_x < game_map[level].size_x && block_y >= 0))
 						{
 							erase_cur_block(block_shape, block_angle, block_x, block_y);
 							block_x++;
@@ -769,13 +830,13 @@ void Game::check_full_line()
 			console.gotoxy(1 * 2 + ab_x - 1, i + ab_y);
 			for (j = 0; j <= game_map[level].size_x - 1; j++)
 			{
-				printf("□");
+				PrintErase((1+j) * 16 + ab_x - 1, i*8 + ab_y);
 				Sleep(10);
 			}
-			console.gotoxy(1 * 2 + ab_x - 1, i + ab_y);
+			console.gotoxy(1 * 16 + ab_x - 1, i*8 + ab_y);
 			for (j = 0; j <= game_map[level].size_x - 1; j++)
 			{
-				printf("  ");
+				PrintVoid((1 + j) * 16 + ab_x - 1, i * 8 + ab_y);
 				Sleep(10);
 			}
 
