@@ -119,7 +119,7 @@ void Game::play_game()
 				int s = rand() % 30000;
 				if (game_map[level].skill == 0 && s < 10) {
 					game_map[level].fast();
-					game_map[level].skill = level;
+					game_map[level].skill = 1;
 				}
 				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
 					game_map[level].fast();
@@ -137,14 +137,14 @@ void Game::play_game()
 			if (level == 3 || level == 7) {
 				int s = rand() % 30000;
 				if (game_map[level].skill == 0 && s < 10) {
-					game_map[level].skill = level;
+					game_map[level].skill = 3;
 				}
 			}
 			if (level == 4 || level == 7) {
 				int s = rand() % 30000;
 				if (game_map[level].skill == 0 && s < 10) {
 					game_map[level].invisible();
-					game_map[level].skill = level;
+					game_map[level].skill = 4;
 				}
 				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
 					game_map[level].invisible();
@@ -152,16 +152,18 @@ void Game::play_game()
 			}
 			if (level == 5 || level == 7) {
 				int s = rand() % 30000;
-				if (game_map[level].skill == 0 && s < 10) {
+				if (game_map[level].skill == 0 && block_shape < 8 && s < 10) {
 					game_map[level].random_block();
 					block.gen_random_block();
-					game_map[level].skill = level;
+					game_map[level].skill = 5;
 				}
 			}
 			if (level == 6 || level == 7) {
 				int s = rand() % 30000;
 				if (s < 10) {
-					game_map[level].skill = level;
+					game_map[level].turn();
+					show_total_block();
+					check_full_line();
 
 				}
 			}
@@ -174,7 +176,7 @@ void Game::play_game()
 					if (level == 1) {
 						if (game_map[level].skill == 0) {
 							game_map[level].fast();
-							game_map[level].skill = level;
+							game_map[level].skill = 1;
 
 						}
 						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
@@ -189,15 +191,15 @@ void Game::play_game()
 					}
 					if (level == 3) {
 						if (game_map[level].skill == 0) {
-							game_map[level].skill = level;
+							game_map[level].skill = 3;
 						}
 					}
 
 					if (level == 4) {
 						if (game_map[level].skill == 0) {
 							game_map[level].invisible();
-							game_map[level].skill = level;
-
+							game_map[level].skill = 4;
+							show_total_block();
 						}
 						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
 							game_map[level].invisible();
@@ -207,23 +209,25 @@ void Game::play_game()
 						if (game_map[level].skill == 0) {
 							game_map[level].random_block();
 							block.gen_random_block();
-							game_map[level].skill = level;
+							game_map[level].skill = 5;
 						}
 					}
 					if (level == 6) {
 						if (game_map[level].skill == 0) {
-							game_map[level].skill = level;
+							game_map[level].turn();
+							show_total_block();
+							check_full_line();
 						}
 					}
-					if (level == 7) {
+					if (level == 7 && game_map[level].skill == 0) {
 						int s = rand() % 6 + 1;
 						if (s == 1) {
 							if (game_map[level].skill == 0) {
 								game_map[level].fast();
-								game_map[level].skill = level;
+								game_map[level].skill = 1;
 
 							}
-							else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+							else if (game_map[level].skill == 1 && time(NULL) - game_map[level].time_now > 5) {
 								game_map[level].fast();
 								if (level == 1) game_map[level].speed = 38;
 								else game_map[level].speed = 10;
@@ -235,30 +239,33 @@ void Game::play_game()
 						}
 						if (s == 3) {
 							if (game_map[level].skill == 0) {
-								game_map[level].skill = level;
+								game_map[level].skill = 3;
 							}
 						}
 						if (s == 4) {
 							if (game_map[level].skill == 0) {
 								game_map[level].invisible();
-								game_map[level].skill = level;
+								game_map[level].skill = 4;
+								show_total_block();
 
 							}
-							else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+							else if (game_map[level].skill == 4 && time(NULL) - game_map[level].time_now > 5) {
 								game_map[level].invisible();
 							}
 						}
 						if (s == 5) {
-							if (game_map[level].skill == 0) {
+							if (game_map[level].skill == 0 && block_shape < 8) {
 								game_map[level].random_block();
 								block.gen_random_block();
-								game_map[level].skill = level;
+								game_map[level].skill = 5;
 							}
 
 						}
 						if (s == 6) {
 							if (game_map[level].skill == 0) {
-								game_map[level].skill = level;
+								game_map[level].turn();
+								show_total_block();
+								check_full_line();
 							}
 						}
 
