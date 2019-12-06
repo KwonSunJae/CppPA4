@@ -4,6 +4,7 @@
 #include <ctime>
 #include <Windows.h>
 #include <conio.h>
+
 using namespace std;
 
 Game::Game() {
@@ -58,6 +59,20 @@ void Game::play_game()
 	const char KEY_DOWN = 0x50;
 
 	Console::setTetrisGame();
+
+	string check;
+	while (true) {
+		cout << "shadow 기능을 사용하시겠습니까? (y/n) : ";
+		cin >> check;
+		if (check == "y") {
+			shadow = true;
+			break;
+		}
+		else if (check == "n") {
+			shadow = false;
+			break;
+		}
+	}
 
 	while (1)
 	{
@@ -149,6 +164,7 @@ void Game::play_game()
 							game_map[level].skill = level;
 						}
 					}
+
 					if (level == 4) {
 						if (game_map[level].skill == 0) {
 							game_map[level].invisible();
@@ -373,10 +389,34 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 			{
 				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
 				printf("■");
-
 			}
 		}
 	}
+
+	if (shadow) {
+		shadow_x = x;
+		shadow_y = y;
+		int shadowgm=0;
+		while (shadowgm == 0) {
+			shadowgm = move_shadow_block(&shape, &angle, &shadow_x, &shadow_y);
+		}
+		console.Color(GRAY);
+		for (i = 0; i < 4; i++)
+		{
+			for (j = 0; j < 4; j++)
+			{
+				if ((j + y) < 0)
+					continue;
+
+				if (block.block[shape][angle][j][i] > 0)
+				{
+					console.gotoxy((i + shadow_x) * 2 + ab_x - 1, j + shadow_y + ab_y);
+					printf("■");
+				}
+			}
+		}
+	}
+
 	console.Color(BLACK);
 	console.gotoxy(77, 23);
 	return 0;
@@ -392,7 +432,7 @@ int Game::erase_cur_block(int shape, int angle, int x, int y)
 			if (block.block[shape][angle][j][i] == 1)
 			{
 				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
-				printf("  ");
+				printf("　");
 				//break;
 
 			}
@@ -451,7 +491,7 @@ int Game::show_next_block(int shape)
 				printf("■");
 			}
 			else {
-				printf("  ");
+				printf("　");
 			}
 
 		}
@@ -551,6 +591,18 @@ int Game::move_block(int* shape, int* angle, int* x, int* y, int* next_shape)
 		block_start(*shape, angle, x, y); //angle,x,y는 포인터임
 		show_next_block(*next_shape);
 		return 2;
+	}
+	return 0;
+}
+
+int Game::move_shadow_block(int *shape, int *angle, int* x, int* y)
+{
+	(*y)++;
+	if (strike_check(*shape, *angle, *x, *y))
+	{
+		(*y)--;
+
+		return 1;
 	}
 	return 0;
 }

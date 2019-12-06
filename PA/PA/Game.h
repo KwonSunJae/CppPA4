@@ -1,8 +1,8 @@
 #pragma once
 #include "Map.h"
-#include "Block.h";
 #include "Console.h"
 #include "Block.h"
+#include "Player.h"
 class Game
 {
 public:
@@ -37,6 +37,8 @@ public:
 	int score; // 점수
 	int lines; // 현재 없앤 줄
 	int is_gameover = 0;
+	int shadow_x, shadow_y;
+	bool shadow;
 
 	Game();
 	void play_game();
@@ -50,6 +52,7 @@ public:
 	int merge_block(int shape, int angle, int x, int y); //블럭이 바닥에 닿았을때 진행중인 블럭과 쌓아진 블럭을 합침
 	void block_start(int shape, int* angle, int* x, int* y); //블럭이 처음 나올때 위치와 모양을 알려줌
 	int move_block(int* shape, int* angle, int* x, int* y, int* next_shape); //게임오버는 1을리턴 바닥에 블럭이 닿으면 2를 리턴
+	int move_shadow_block(int *shape, int* angle, int* x, int* y);
 	void show_gameover();
 	void show_gamestat();
 	void show_logo();
