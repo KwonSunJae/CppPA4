@@ -57,6 +57,12 @@
     <ClCompile Include="temp.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TxtLayout.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -93,6 +99,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TxtLayout.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

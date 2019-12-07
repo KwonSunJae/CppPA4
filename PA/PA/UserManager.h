@@ -7,6 +7,7 @@ using namespace std;
 class UserManager
 {
 	vector<User*> userList;
+	vector<int> userIDList;
 	User* currUser = nullptr;
 	const string FILENAME = "userList.txt";
 public:
@@ -19,6 +20,7 @@ public:
 	void delUser();
 	bool eraseData(const string& n);
 	bool isLoad(const string& n);
-	/*User& newUser();*/
+	int SetOnLoad();
+	string enterName();
 };
 

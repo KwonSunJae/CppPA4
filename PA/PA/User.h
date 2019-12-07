@@ -4,7 +4,7 @@ using namespace std;
 class User
 {
 	string name;
-	bool isClear[10] = { 0, };
+	bool isClear[8] = { 0, };
 	bool isBonus;
 public:
 	User(const string& name, const bool b) :name(name), isBonus(b) {}
@@ -13,4 +13,3 @@ public:
 	int hasBonus() { return isBonus; }
 	string getClearStr(const int& i);
 };
-

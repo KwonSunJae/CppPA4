@@ -4,7 +4,7 @@
 #include <ctime>
 #include <Windows.h>
 #include <conio.h>
-
+#include <sstream>
 using namespace std;
 
 Game::Game() {
@@ -42,47 +42,45 @@ Game::Game() {
 	game_map[7].speed = 10;
 	game_map[7].stick_rate = 13;
 	game_map[7].clear_line = 20;
-	
 }
-
 void PrintBlock(int x, int y) {
 	int tempy = y;
 	Console::gotoxy(x, tempy++);
-	cout << "v rvvvvvvvLvviBM";
+	cout << "IIIIIIIIIIIIIIII";
 	Console::gotoxy(x, tempy++);
-	cout << "7 ''''''''''''Ml";
+	cout << "IMMMMMMMMMMMMMMI";
 	Console::gotoxy(x, tempy++);
-	cout << "7.7777777777:B@l";
+	cout << "IMMMMMMMMMMMMMMI";
 	Console::gotoxy(x, tempy++);
-	cout << "r.:ri;iri;ii.XBl";
+	cout << "IMMMMMMMMMMMMMMI";
 	Console::gotoxy(x, tempy++);
-	cout << "7.iiiiiiiii:.S@l";
+	cout << "IMMMMMMMMMMMMMMI";
 	Console::gotoxy(x, tempy++);
-	cout << "r.:i:i:i:i::.X@l";
+	cout << "IMMMMMMMMMMMMMMI";
 	Console::gotoxy(x, tempy++);
-	cout << "r .......... 2@l";
+	cout << "IMMMMMMMMMMMMMMI";
 	Console::gotoxy(x, tempy++);
-	cout << "i.0MZW08ZWZZ2@Ml";
+	cout << "IIIIIIIIIIIIIIII";
 
 }
 void PrintErase(int x, int y) {
 	int tempy = y;
 	Console::gotoxy(x, tempy++);
-	cout << "v rvvvvvvvLvviBM";
+	cout << "IIIIIIIIIIIIIIII";
 	Console::gotoxy(x, tempy++);
-	cout << "7             @l";
+	cout << "I              I";
 	Console::gotoxy(x, tempy++);
-	cout << "7             @l";
+	cout << "I              I";
 	Console::gotoxy(x, tempy++);
-	cout << "r             Bl";
+	cout << "I              I";
 	Console::gotoxy(x, tempy++);
-	cout << "7             @l";
+	cout << "I              I";
 	Console::gotoxy(x, tempy++);
-	cout << "r             @l";
+	cout << "I              I";
 	Console::gotoxy(x, tempy++);
-	cout << "r             @l";
+	cout << "I              I";
 	Console::gotoxy(x, tempy++);
-	cout << "i.0MZW08ZWZZ2@Ml";
+	cout << "IIIIIIIIIIIIIIII";
 }
 void PrintVoid(int x, int y) {
 	int tempy = y;
@@ -104,7 +102,31 @@ void PrintVoid(int x, int y) {
 	cout << "                ";
 
 }
+void printFile(int x, int y , string s) {
+	Console::gotoxy(x, y);
+	ifstream fin(s);
+	if (fin.is_open()) {
+		int num; fin >> num;
+		string tmp;
+		for (int i = 0; i < num; i++) {
+			getline(fin, tmp);
+			Console::gotoxy(x, y+i);
+			cout << tmp << endl;
+		}
+	}
 
+}
+void printFile(int x, int y) {
+	Console::gotoxy(x, y);
+	
+		for (int i = 0; i < 17; i++) {
+			
+			Console::gotoxy(x, y + i);
+			cout << "                                   ";
+		}
+	
+
+}
 bool Game::play_game()
 {
 	const char EXT_KEY = 0xffffffe0;
@@ -113,10 +135,10 @@ bool Game::play_game()
 	const char KEY_UP = 0x48;
 	const char KEY_DOWN = 0x50;
 
-	
 
+	Console::setSizeGame();
 	string check;
-	
+
 
 	while (1)
 	{
@@ -124,6 +146,29 @@ bool Game::play_game()
 		
 		init();
 		show_total_block();// PLUS 플레이 화면에서 테두리 출력.
+	
+
+		Console::Color(15);
+		stringstream ss;
+		ss << this->level+1;
+		string str = "banner";
+		str += ss.str();
+		str += ".txt";
+		printFile(300, 35, str);
+		for (int i = 1; i <= 7; i++) {
+			if (help_skills[i - 1] == 1 && is_used[i - 1] != 1) {
+				Console::Color(15);
+				stringstream ss;
+				ss << i;
+				string str = "icon";
+				str += ss.str();
+				str += ".txt";
+				printFile(20+35 * i, 200, str);
+			}
+
+
+		}
+
 		block_shape = make_new_block();
 		next_block_shape = make_new_block();
 		show_next_block(next_block_shape);
@@ -131,13 +176,23 @@ bool Game::play_game()
 		show_gamestat();
 		for (i = 1; 1; i++)
 		{
+			
+			Console::Color(BLACK);
+			if (sk2_time != 0 && (time(NULL) - sk2_time > 5)) {
+				game_map[level].speed = speed_temp;
+				sk2_time = 0;
+			}
+			if (sk5_time != 0 && (time(NULL) - sk5_time > 5)) {
+				sk5_time = 0;
+				erase_shadow_block(block_shape, block_angle, shadow_x, shadow_y);
+			}
 			if (level == 1 || level == 7) {
 				int s = rand() % 30000;
 				if (game_map[level].skill == 0 && s < 10) {
 					game_map[level].fast();
 					game_map[level].skill = 1;
 				}
-				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+				else if (game_map[level].skill == 1 && time(NULL) - game_map[level].time_now > 5) {
 					game_map[level].fast();
 					if (level == 1) game_map[level].speed = 38;
 					else game_map[level].speed = 10;
@@ -162,7 +217,7 @@ bool Game::play_game()
 					game_map[level].invisible();
 					game_map[level].skill = 4;
 				}
-				else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+				else if (game_map[level].skill == 4 && time(NULL) - game_map[level].time_now > 5) {
 					game_map[level].invisible();
 				}
 			}
@@ -185,7 +240,145 @@ bool Game::play_game()
 			}
 			if (_kbhit())
 			{
+				int j;
 				char keytemp = _getche();
+				for (j = 49; j < 56; j++) {
+					if (keytemp == j && help_skills[j - 49] && !is_used[j - 49]) {
+						
+						is_used[j - 49] = true;
+						break;
+					}
+				}
+				if (j != 57) {
+					switch (j) {
+						console.Color(RED);
+						console.gotoxy(50, 50);
+						cout << j << j << j << j << endl;
+					case 49: {
+						next_block_shape = 1;
+						show_next_block(1);
+						printFile(20 + 35 * (j - 48), 200);
+						break;
+					}
+					case 50: {
+						sk2_time = time(NULL);
+						speed_temp = game_map[level].speed;
+						game_map[level].speed = 40;
+						printFile(20 + 35 * (j - 48), 200);
+						break;
+					}
+					case 51: {
+						game_map[level].delete_line();
+						show_total_block();
+						printFile(20 + 35 * (j - 48), 200);
+						break;
+					}
+					case 52: {
+						next_block_shape = 0;
+						show_next_block(0);
+						printFile(20 + 35 * (j - 48), 200);
+						break;
+					}
+					case 53: {
+						sk5_time = time(NULL);
+						printFile(20 + 35 * (j - 48), 200);
+						break;
+					}
+					case 54: {
+						printFile(20 + 35 * (j - 48), 200);
+						int one_x = 1;
+						int one_y = 15;
+						int save_x = 0;
+						int save_y = 0;
+						console.gotoxy(one_y, one_x);
+						if (oneblock_strike_check(one_x, one_y)) {
+							save_x = one_x;
+							save_y = one_y;
+						}
+						PrintErase((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+						while (true) {
+							if (_kbhit()) {
+								char onetemp = _getche();
+								if (onetemp == EXT_KEY)
+								{
+									onetemp = _getche();
+									switch (onetemp)
+									{
+									case KEY_UP:
+										if (one_y > 1) {
+											if (oneblock_strike_check(one_x, one_y)) {
+												save_x = one_x;
+												save_y = one_y;
+											}
+											PrintVoid((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+											one_y--;
+										}
+										break;
+									case KEY_LEFT:
+										if (one_x > 1)
+										{
+											if (oneblock_strike_check(one_x, one_y)) {
+												save_x = one_x;
+												save_y = one_y;
+											}
+											PrintVoid((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+											one_x--;
+										}
+										break;
+									case KEY_RIGHT:
+										if (one_x < game_map[level].size_x)
+										{
+											if (oneblock_strike_check(one_x, one_y)) {
+												save_x = one_x;
+												save_y = one_y;
+											}
+											PrintVoid((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+											one_x++;
+										}
+										break;
+									case KEY_DOWN:
+										if (one_y < game_map[level].size_y - 1) {
+											if (oneblock_strike_check(one_x, one_y)) {
+												save_x = one_x;
+												save_y = one_y;
+											}
+											PrintVoid((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+											one_y++;
+										}
+										break;
+									}
+								}
+								if (onetemp == 32) //스페이스바를 눌렀을때
+								{
+									PrintVoid((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+									if (oneblock_strike_check(one_x, one_y)) {
+										game_map[level].map[one_y][one_x] = 0;
+									}
+									break;
+								}
+							}
+							if (!(save_x == 0 && save_y == 0)) {
+								console.Color(DARK_GRAY);
+								PrintBlock((save_x) * 16 + ab_x - 1, (save_y) * 8 + ab_y);
+							}
+							else
+								PrintVoid((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+							console.Color(RED);
+							PrintBlock((one_x) * 16 + ab_x - 1, (one_y) * 8 + ab_y);
+							save_x = 0; save_y = 0;
+						}
+						break;
+					}
+					case 55:
+						printFile(20 + 35 * (j - 48), 200);
+						game_map[level].turn();
+						show_total_block();
+						check_full_line();
+					}
+				}
+				if (keytemp == 122) {//z
+					lines = game_map[level].clear_line;
+				}
 				if (keytemp == 27) {
 					console.Color(RED);
 
@@ -195,7 +388,7 @@ bool Game::play_game()
 							game_map[level].skill = 1;
 
 						}
-						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+						else if (game_map[level].skill == 1 && time(NULL) - game_map[level].time_now > 5) {
 							game_map[level].fast();
 							if (level == 1) game_map[level].speed = 38;
 							else game_map[level].speed = 10;
@@ -217,7 +410,7 @@ bool Game::play_game()
 							game_map[level].skill = 4;
 							show_total_block();
 						}
-						else if (game_map[level].skill == level && time(NULL) - game_map[level].time_now > 5) {
+						else if (game_map[level].skill == 4 && time(NULL) - game_map[level].time_now > 5) {
 							game_map[level].invisible();
 						}
 					}
@@ -295,7 +488,8 @@ bool Game::play_game()
 					switch (keytemp)
 					{
 					case KEY_UP: //회전하기
-
+						if (sk5_time != 0)
+							erase_shadow_block(block_shape, block_angle, shadow_x, shadow_y);
 						if (strike_check(block_shape, (block_angle + 1) % 4, block_x, block_y) == 0)
 						{
 							erase_cur_block(block_shape, block_angle, block_x, block_y);
@@ -319,6 +513,8 @@ bool Game::play_game()
 					case KEY_LEFT: //왼쪽으로 이동
 						if (block_x > 1)
 						{
+							if (sk5_time != 0)
+								erase_shadow_block(block_shape, block_angle, shadow_x, shadow_y);
 							erase_cur_block(block_shape, block_angle, block_x, block_y);
 							block_x--;
 							if (strike_check(block_shape, block_angle, block_x, block_y) == 1)
@@ -330,6 +526,8 @@ bool Game::play_game()
 					case KEY_RIGHT: //오른쪽으로 이동
 						if ((block_x < game_map[level].size_x - 3 && block_y < 0) || (block_x < game_map[level].size_x && block_y >= 0))
 						{
+							if (sk5_time != 0)
+								erase_shadow_block(block_shape, block_angle, shadow_x, shadow_y);
 							erase_cur_block(block_shape, block_angle, block_x, block_y);
 							block_x++;
 							if (strike_check(block_shape, block_angle, block_x, block_y) == 1)
@@ -361,7 +559,7 @@ bool Game::play_game()
 
 			if (is_gameover == 1)
 			{
-				
+
 				is_gameover = 0; // FIXED_3 게임 오버 시 재 실행하면 계속 FAILED 뜨는거 초기화해서 잡아줌.
 				console.Color(GRAY);
 				return false;
@@ -369,9 +567,9 @@ bool Game::play_game()
 			is_gameover = 0;
 			if (game_map[level].clear_line <= lines) //클리어 스테이지
 			{
-				
-			
-				
+
+
+
 				lines = 0;
 				show_total_block(); // FIXED 스코어, 테두리 색깔 안바뀌는거 처리함.
 				show_next_block(next_block_shape); // FIXED 스코어, 테두리 색깔 안바뀌는거 처리함.
@@ -389,7 +587,13 @@ bool Game::play_game()
 
 void Game::init()
 {
-	game_map[level].map = game_map[level].genMap();
+	sk2_time = sk5_time = 0;
+	for (int i = 0; i < 8; i++) {
+		game_map[i].skill = 0;
+		
+		is_used[i] = 0;
+	}
+	game_map[level].genMap(game_map[level].map);
 	game_map[level].skill = 0;
 	lines = 0;
 	score = 0;
@@ -429,6 +633,26 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 		console.Color(DARK_YELLOW);
 		break;
 	}
+	if (sk5_time != 0) {
+		shadow_x = x;
+		shadow_y = y;
+		while (!move_shadow_block(&shape, &angle, &shadow_x, &shadow_y)) {}
+		for (i = 0; i < 4; i++)
+		{
+			for (j = 0; j < 4; j++)
+			{
+				if ((j + shadow_y) < 0)
+					continue;
+
+				if (block.block[shape][angle][j][i] > 0)
+				{
+
+					PrintErase((i + shadow_x) * 16 + ab_x - 1, (j + shadow_y) * 8 + ab_y);
+
+				}
+			}
+		}
+	}
 	for (i = 0; i < 4; i++)
 	{
 		for (j = 0; j < 4; j++)
@@ -438,35 +662,12 @@ int Game::show_cur_block(int shape, int angle, int x, int y)
 
 			if (block.block[shape][angle][j][i] > 0)
 			{
-				
-				PrintBlock((i + x) * 16 + ab_x - 1, (j + y)*8 + ab_y);
+
+				PrintBlock((i + x) * 16 + ab_x - 1, (j + y) * 8 + ab_y);
 			}
 		}
 	}
 
-	/*if (shadow) {
-		shadow_x = (x-3)/2;
-		shadow_y = y;
-		int shadowgm=0;
-		while (shadowgm == 0) {
-			shadowgm = move_shadow_block(&shape, &angle, &shadow_x, &shadow_y);
-		}
-		console.Color(GRAY);
-		for (i = 0; i < 4; i++)
-		{
-			for (j = 0; j < 4; j++)
-			{
-				if ((j + y) < 0)
-					continue;
-
-				if (block.block[shape][angle][j][i] > 0)
-				{
-					console.gotoxy((i + shadow_x) * 2 + ab_x - 1, j + shadow_y + ab_y);
-					printf("■");
-				}
-			}
-		}
-	}*/
 
 	console.Color(BLACK);
 	console.gotoxy(77, 23);
@@ -494,7 +695,7 @@ int Game::erase_cur_block(int shape, int angle, int x, int y)
 
 int Game::show_total_block()
 {
-	if ((level == 6 || level == 7) && game_map[level].skill == level) {
+	if ((level == 6 || level == 7) && game_map[level].skill == 6) {
 		game_map[level].skill = 0;
 		game_map[level].turn();
 		check_full_line();
@@ -515,7 +716,7 @@ int Game::show_total_block()
 			console.gotoxy((j * 2) + ab_x - 1, i + ab_y);
 			if (game_map[level].map[i][j] > 0)
 			{
-				if ((level == 4 || level == 7) && game_map[level].map[i][j] == 1 && game_map[level].skill == level) PrintVoid((j * 16) + ab_x - 1, i * 8 + ab_y);
+				if ((level == 4 || level == 7) && game_map[level].map[i][j] == 1 && game_map[level].skill == 4) PrintVoid((j * 16) + ab_x - 1, i * 8 + ab_y);
 				else PrintBlock((j * 16) + ab_x - 1, i * 8 + ab_y);
 			}
 			else {
@@ -539,10 +740,10 @@ int Game::show_next_block(int shape)
 		{
 			if (i == 1 || i == 6 || j == 0 || j == 5)
 			{
-				PrintBlock(18 * 16 + 36+16*j, i * 8-7);
+				PrintBlock(18 * 16 + 36 + 16 * j, i * 8 - 7);
 			}
 			else {
-				PrintVoid(18 * 16 + 36 + 16 * j, i * 8-7);
+				PrintVoid(18 * 16 + 36 + 16 * j, i * 8 - 7);
 			}
 
 		}
@@ -560,11 +761,11 @@ int Game::make_new_block()
 	if (i <= game_map[level].stick_rate) //막대기 나올확률 계산
 		return 0; //막대기 모양으로 리턴
 
-	if ((level == 5 || level == 7) && game_map[level].skill == level) {
+	if ((level == 5 || level == 7) && game_map[level].skill == 5) {
 		shape = 8;
 		game_map[level].random_block();
 	}
-	else if ((level == 3 || level == 7) && game_map[level].skill == level) {
+	else if ((level == 3 || level == 7) && game_map[level].skill == 3) {
 		shape = 7;
 		game_map[level].f_block();
 	}
@@ -596,6 +797,47 @@ int Game::strike_check(int shape, int angle, int x, int y)
 		}
 	}
 	return 0;
+}
+
+int Game::shadow_strike_check(int shape, int angle, int x, int y)
+{
+	int i, j;
+	int block_dat = 0;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			if (y + i >= -3 && y + i <= game_map[level].size_y + 2 && x + j <= game_map[level].size_x + 3) {
+				if (((x + j) == game_map[level].size_x + 1))
+					block_dat = 1;
+				else if (y + i < 0) {
+					block_dat = 0;
+				}
+				else
+					block_dat = game_map[level].map[y + i][x + j];
+
+				if (block_dat != 0 && (block.block[shape][angle][i][j] == 1 || y < -3)) //좌측벽의 좌표를 빼기위함, FIXED_6 왼쪽에 일자블록 나오자마자 집어넣으면 Game over 뜨는 오류 수정
+				{
+					return 1;
+				}
+			}
+			else
+				return 1;
+		}
+	}
+	return 0;
+}
+
+int Game::oneblock_strike_check(int x, int y)
+{
+
+	if (game_map[level].map[y][x])
+	{
+		return 1;
+	}
+	else
+		return 0;
 }
 
 int Game::merge_block(int shape, int angle, int x, int y)
@@ -646,21 +888,40 @@ int Game::move_block(int* shape, int* angle, int* x, int* y, int* next_shape)
 	return 0;
 }
 
-int Game::move_shadow_block(int *shape, int *angle, int* x, int* y)
+
+int Game::move_shadow_block(int* shape, int* angle, int* x, int* y)
 {
-	(*y)++;
-	if (strike_check(*shape, *angle, *x, *y))
+	erase_shadow_block(*shape, *angle, *x, *y);
+
+	(*y)++; //블럭을 한칸 아래로 내림
+	if (shadow_strike_check(*shape, *angle, *x, *y))
 	{
 		(*y)--;
-
 		return 1;
 	}
 	return 0;
 }
+void Game::erase_shadow_block(int shape, int angle, int x, int y)
+{
+	int i, j;
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			if (block.block[shape][angle][j][i] == 1)
+			{
+				console.gotoxy((i + x) * 2 + ab_x - 1, j + y + ab_y);
+				PrintVoid((i + x) * 16 + ab_x - 1, (j + y) * 8 + ab_y);
+				//break;
+
+			}
+		}
+	}
+}
 
 void Game::show_gameover()
 {
-	console.Color(12);	// RED = 12
+	console.Color(12);   // RED = 12
 	console.gotoxy(15, 8);
 	cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
 	console.gotoxy(15, 9);
@@ -681,18 +942,18 @@ void Game::show_gameover()
 
 void Game::show_gamestat()
 {
-	static int printed_text = 0;
+	/*static int printed_text = 0;
 	console.Color(GRAY);
 	if (printed_text == 0)
 	{
-		console.gotoxy(46, 7);
-		cout << "STAGE";
+	   console.gotoxy(46, 7);
+	   cout << "STAGE";
 
-		console.gotoxy(46, 9);
-		cout << "SCORE";
+	   console.gotoxy(46, 9);
+	   cout << "SCORE";
 
-		console.gotoxy(46, 12);
-		cout << "LINES";
+	   console.gotoxy(46, 12);
+	   cout << "LINES";
 
 	}
 	console.gotoxy(52, 7);
@@ -701,7 +962,7 @@ void Game::show_gamestat()
 	cout << score;
 	console.gotoxy(46, 13);
 	int remain = game_map[level].clear_line - lines;
-	cout << remain;
+	cout << remain;*/
 }
 
 void Game::show_logo()
@@ -820,10 +1081,10 @@ void Game::check_full_line()
 			console.gotoxy(1 * 2 + ab_x - 1, i + ab_y);
 			for (j = 0; j <= game_map[level].size_x - 1; j++)
 			{
-				PrintErase((1+j) * 16 + ab_x - 1, i*8 + ab_y);
+				PrintErase((1 + j) * 16 + ab_x - 1, i * 8 + ab_y);
 				Sleep(10);
 			}
-			console.gotoxy(1 * 16 + ab_x - 1, i*8 + ab_y);
+			console.gotoxy(1 * 16 + ab_x - 1, i * 8 + ab_y);
 			for (j = 0; j <= game_map[level].size_x - 1; j++)
 			{
 				PrintVoid((1 + j) * 16 + ab_x - 1, i * 8 + ab_y);

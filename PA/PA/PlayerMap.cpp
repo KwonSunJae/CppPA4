@@ -1,9 +1,10 @@
 #include "PlayerMap.h"
-
+#include "Console.h"
 PlayerMap::PlayerMap(string name):
 	user(Player("unkwnon"))
 {
-	
+	x = 12;
+	y = 75;
 }
 
 void PlayerMap::drawmap(string filename)
@@ -45,8 +46,7 @@ void ShowMat(int x, int y) {
 }
 int PlayerMap::movePlayer()
 {
-	x = 0;
-	y = 75;
+	
 
 	while (true) {
 		
@@ -119,7 +119,55 @@ int PlayerMap::movePlayer()
 
 
 				}
+				/*if (ch == 27) {
+					Console::setSizeSetting();
+					system("cls");
+					Console::gotoxy(10, 3);
+					cout << "===============  PAUSE  ===================";
+					Console::gotoxy(10, 5);
+					cout << "1. 게임 종료 [저장x]";
+					Console::gotoxy(10, 7);
+					cout << "2. 돌아가기";
+					int res = 0;
+					int limit = 1;
+					Console::gotoxy(10, 6);
+					cout << ">------------------------------------------<";
+					while (true) {
+						int ch;
+						if (_kbhit()) {
+							ch = _getch();
+							if (ch == 13) {
+								break;
+							}
+							if (ch == 224) {
+								ch = _getch();
+								if (ch == 80) {
+									if (res != limit) {
+										Console::gotoxy(10, 6 + 2 * res);
+										cout << "                                             ";
+										res++;
+										Console::gotoxy(10, 6 + 2 * res);
+										cout << ">------------------------------------------<";
+									}
+								}
+								if (ch == 72) {
+									if (res != 0) {
+										Console::gotoxy(10, 6 + 2 * res);
+										cout << "                                             ";
+										res--;
+										Console::gotoxy(10, 6 + 2 * res);
+										cout << ">------------------------------------------<";
+									}
+								}
+							}
+						}
+					}
+					switch (res) {
+					case 0:
 
+					case 1:
+					}
+				}*/
 
 			}
 			else {

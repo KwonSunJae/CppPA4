@@ -1,19 +1,7 @@
 #include "Menu.h"
 #include "Console.h"
+#include <conio.h>
 using namespace std;
-
-void Menu::printTxt(const string& filename)
-{
-	ifstream fin(filename);
-	if (fin.is_open()) {
-		int num; fin >> num;
-		string tmp;
-		for (int i = 0; i < num; i++) {
-			getline(fin, tmp);
-			cout << tmp << endl;
-		}
-	}
-}
 
 void Menu::printPressStart()
 {
@@ -48,14 +36,13 @@ int Menu::menuSel()
 	while (true) {
 		int ch;
 		if (_kbhit()) {
-			ch = getch();
+			ch = _getch();
 			if (ch == 224) {
-				ch = getch();
+				ch = _getch();
 				switch (ch) {
 				case 72: {
 					if (curr != limit_min) {
 						curr--;
-						Beep(700, 350);
 						Console::gotoxy(0, 0);
 						printTxt("menu.txt");
 						Console::gotoxy(0, 0);
@@ -66,7 +53,6 @@ int Menu::menuSel()
 				case 80:
 					if (curr != limit_max) {
 						curr++;
-						Beep(700, 350);
 						Console::gotoxy(0, 0);
 						printTxt("menu.txt");
 						Console::gotoxy(0, 0);

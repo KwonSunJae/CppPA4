@@ -1,4 +1,5 @@
 #pragma once
+#include "TxtLayout.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -6,11 +7,11 @@
 
 using namespace std;
 
-class Menu
+class Menu : public TxtLayout
 {
 public:
-	void printTxt(const string& filename);
 	void printPressStart();
 	int menuSel();
 };
-
+/// 200 줄
+/// 124 줄 부터 텍스트

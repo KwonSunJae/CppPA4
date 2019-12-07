@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <mmsystem.h>
+#include <conio.h>
 #include <string>
 #pragma comment(lib, "winmm.lib")
 
@@ -9,10 +10,10 @@ using namespace std;
 
 class SoundManager
 {
-	string playList[5] = { "play1.wav","play2.wav" ,"play3.wav" ,"play4.wav" ,"play5.wav" };
-	string effectList[7] = { "BLOCK_DAT.wav","ERASE.wav","CLEAR.wav","FAIL.wav","SKILL.wav","MOVE.wav","TALK.wav" };
+	string playList[3] = { "play1.wav","play2.wav" ,"play3.wav" };
+	string effectList[7] = { "BLOCK_DAT.wav","ERASE.wav","CLEAR.wav","FAIL.wav","SKILL.wav","MOVE.wav","DIALOG.wav" };
 	string menuList[3] = { "menuBGM1.wav","menuBGM2.wav","menuBGM3.wav" };
-
+	int currPlay = 0;
 public:
 	enum {
 		DAT,
@@ -21,7 +22,7 @@ public:
 		FAIL,
 		SKILL,
 		MOVE,
-		TALK
+		DIALOG
 	};
 	enum {
 		PLAY1,
@@ -37,6 +38,6 @@ public:
 	};
 	void playListSND(const int& i);
 	void playeffSND(const int& i);
-	void menuSND(const int& i);
+	void menuSND();
+	void setSoundID();
 };
-

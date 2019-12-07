@@ -21,7 +21,10 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Console.cpp">
+      <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</SDLCheck>
+    </ClCompile>
+    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="map.cpp" />
@@ -31,13 +34,17 @@
     <ClCompile Include="PlayerMap.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="temp.cpp" />
+    <ClCompile Include="TxtLayout.cpp" />
     <ClCompile Include="User.cpp" />
-    <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="UserManager.cpp">
+      <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</SDLCheck>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Dialog.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="Menu.h" />
@@ -45,6 +52,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMap.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="TxtLayout.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserManager.h" />
   </ItemGroup>

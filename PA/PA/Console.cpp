@@ -59,7 +59,7 @@ void Console::setSizeStory()
 	/*Console::setFontSize(1, 2);
 	Console::setConsoleSize(500, 200);*/
 	Console::setFontSize(2, 4);
-	Console::setConsoleSize(501, 190);
+	Console::setConsoleSize(504, 190);
 
 }
 
@@ -80,4 +80,16 @@ void Console::setTetrisGame()
 {
 	Console::setFontSize(5, 10);
 	Console::setConsoleSize(80, 50);
+}
+
+void Console::setSizeDIAL()
+{
+	Console::setFontSize(4, 5);
+	Console::setConsoleSize(1000, 300);
+}
+
+void Console::setSizeSetting()
+{
+	setFontSize(0, 24);
+	setConsoleSize(80, 15);
 }

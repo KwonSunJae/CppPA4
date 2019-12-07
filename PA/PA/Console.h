@@ -2,7 +2,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <string>
-
+#define _CRT_SECURE_NO_WARNINGS
 #define COMMAND_SIZE 256
 using namespace std;
 class Console
@@ -17,7 +17,9 @@ public:
 	void static setSizeGame();
 	void static setSizeMSel();
 	void static setTetrisGame();
-	void Color(int color);
+	void static Color(int color);
 	void static showMatrix(int x, int y);
+	void static setSizeDIAL();
+	void static setSizeSetting();
 };
 

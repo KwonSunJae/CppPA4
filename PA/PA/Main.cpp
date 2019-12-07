@@ -1,7 +1,7 @@
 #include "MichinSi.h"
-int main() {
-	
 
+
+int main() {
 	MichinSi m;
 	m.Execute();
 }

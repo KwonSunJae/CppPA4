@@ -4,31 +4,23 @@
 using namespace std;
 
 Map::Map() {
-	size_x = 16; size_y = 16; // x크기 y크기 16
-	map = genMap();
 }
 
-int** Map::genMap() {
-	int** tmap;
-
-	tmap = new int* [size_y + 5];
-	for (int i = 0; i < size_y + 5; i++) {
-		tmap[i] = new int[size_x + 6];
-		memset(tmap[i], 0, (size_x + 6) * sizeof(int));
-	}
-
+void Map::genMap(int tmap[][18]) {
 	for (int i = 0; i < size_y + 1; i++) {
+		memset(tmap[i], 0, sizeof(int) * 18);
 		for (int j = 0; j < size_x + 2; j++) {
 			if (i == size_y || j == 0 || j == size_x + 1) {
 				tmap[i][j] = 2;
 			}
+			
 		}
+		
 	}
 
-	return tmap;
 }
 
-void Map::fast()
+void Map::fast() // 1
 {
 	if (!skill) {
 		speed = 4;
@@ -39,7 +31,7 @@ void Map::fast()
 	}
 }
 
-void Map::line_up()
+void Map::line_up() // 2
 {
 	for (int i = 1; i <= size_x; i++) {
 		int j;
@@ -54,13 +46,13 @@ void Map::line_up()
 	}
 }
 
-void Map::f_block() {
+void Map::f_block() { // 3
 	if (skill) {
 		skill = 0;
 	}
 }
 
-void Map::invisible()
+void Map::invisible() // 4
 {
 	if (!skill) {
 		time_now = time(NULL);
@@ -70,16 +62,17 @@ void Map::invisible()
 	}
 }
 
-void Map::random_block()
+void Map::random_block() // 5
 {
 	if (skill) {
 		skill = 0;
 	}
 }
 
-void Map::turn() {
+void Map::turn() { // 6
 	int i, j;
-	int** temp_map = genMap();
+	int temp_map[17][18];
+	genMap(temp_map);
 
 	for (i = 0; i < size_y; i++) {
 		sort(map[i] + 1, map[i] + size_x + 1);
@@ -92,14 +85,25 @@ void Map::turn() {
 		}
 	}
 
-	for (i = 0; i < size_y + 1; i++) delete[] map[i];
-	delete[] map;
-	map = genMap();
+	genMap(map);
 	for (i = 0; i < size_y; i++) {
 		for (j = 1; j < size_x + 1; j++) {
 			map[i][j] = temp_map[i][j];
 		}
 	}
-	for (i = 0; i < size_y + 1; i++) delete[] temp_map[i];
-	delete[] temp_map;
+}
+
+void Map::delete_line()
+{
+	for (int i = 1; i <= 16; i++) {
+		map[15][i] = map[14][i] = 0;
+	}
+	for (int i = 1; i <= 16; i++) {
+		for (int j = 15; j >= 2; j--) {
+			map[j][i] = map[j - 2][i];
+		}
+	}
+	for (int i = 1; i <= 16; i++) {
+		map[0][i] = map[1][i] = 0;
+	}
 }
