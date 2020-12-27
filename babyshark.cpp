@@ -3,7 +3,7 @@ using namespace std;
 
 int dx[4]= {1,-1, 0,0};
 int dy[4]= {0,0,1,-1};
-int map[22][22];
+int map[22][22]={10,};
 struct shark{
   int x;
   int y;
@@ -18,7 +18,7 @@ struct shark{
     }
 
     
-    time+= caltime(fish_x,fish_y);
+    time+= Astar(fish_x,fish_y);
     x= fish_x;
     y=fish_y;
   }
@@ -27,6 +27,28 @@ struct shark{
     int temp_time;
     temp_time= ((fish_x>x)?(fish_x-x):(x-fish_x)) + ((fish_y>y)?fish_y-y:y-fish_y);
     return temp_time;
+  }
+  int Astar(int fish_x, int fish_y){
+    int spent=0;
+    while(fish_x !=x && fish_y !=y){
+      int min_index=0;
+      int min_time=caltime(fish_x+dx[0], fish_y+dy[0]);
+      for(int i =1; i<4; i++){
+        
+        if(map[fish_y+dy[i]][fish_x+dx[i]]>size)continue;
+        int ttemp = caltime(fish_x+dx[i],fish_y+dy[i]);
+        if(ttemp<min_time){
+          min_time = ttemp;
+          min_index= i;
+        }
+
+      }
+      fish_x+=dx[min_index];
+      fish_y+=dy[min_index];
+      spent++;
+    }
+
+    return spent;
   }
 };
 struct fish{
@@ -58,7 +80,7 @@ int main() {
         f_index++;
         map[y][x]=temp;
       }
-      
+      else if (temp==0)map[y][x]=0;
     }
   }//y가 작을수록 위임 x가 작을수록 왼쪽
 
@@ -70,7 +92,7 @@ int main() {
       if(f[i].size==0)continue;
       if(f[i].size<shrk.size){
         callMom=false;
-        int spent= shrk.caltime(f[i].x, f[i].y);
+        int spent= shrk.Astar(f[i].x, f[i].y);
         if(min_dist> spent){
           min_dist = spent;
           min_index = i;
